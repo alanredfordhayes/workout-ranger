@@ -42,6 +42,7 @@ def get_products():
     )
     products = json.loads(r.data.decode('utf-8'))
     products = products['products']
+    print(type)
     return products
 
 def update_table():
@@ -52,15 +53,18 @@ def update_table():
         try:
             response = client.get_item(TableName=os.environ['TableName'],Key={'id':{'S':p.id}})
         except:
-            response = client.put_item(TableName=os.environ['TableName'],Item={
-                'id':{'S':p.id}, 
-                'title':{'S':p.title}}
+            response = client.put_item(
+                TableName=os.environ['TableName'],
+                Item={
+                    'id':{'S':p['id']}, 
+                    'title':{'S':p['title']}
+                }
             )
         products_list.append(response)
     return products_list                
 
 def lambda_handler(event, context):
-    t = update_table
+    t = update_table()
     return {
         'statusCode': 200,
         'body': json.dumps('Hello from Lambda!'),
