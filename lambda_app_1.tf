@@ -137,8 +137,8 @@ resource "aws_iam_policy" "app_1" {
                   "secretsmanager:ListSecretVersionIds"
               ],
               "Resource": [
-                  "arn:aws:dynamodb:us-east-1:${AWS_ACCOUNT_NUMBER}:table/${local.app_1_name}",
-                  "arn:aws:secretsmanager:us-east-1:${AWS_ACCOUNT_NUMBER}:secret:workoutranger_shopify_admin_api_access_token-6vDz4g"
+                  "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/${local.app_1_name}",
+                  "arn:aws:secretsmanager:us-east-1:${var.AWS_ACCOUNT_NUMBER}:secret:workoutranger_shopify_admin_api_access_token-6vDz4g"
               ]
             }
           ]
