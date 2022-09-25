@@ -12,12 +12,12 @@ resource "random_string" "random" {
 ##Vars
 variable "AWS_ACCOUNT_NUMBER" {}
 variable "name"{
-  default = "shopify${random_string.random.result}"
+  default = "shopify"
 } 
 
 ##LOCALS
 locals {
-  app_1_name = var.name
+  app_1_name = "${var.name}${random_string.random.result}"
   #LAMBDA
   ##aws_lambda_function
   aws_lambda_function_app_1_function_name = "${local.app_1_name}"
@@ -45,7 +45,7 @@ resource "aws_lambda_function" "app_1" {
   function_name     = local.aws_lambda_function_app_1_function_name
   description       = local.aws_lambda_function_app_1_description
   runtime           = "python3.9"
-  handler           = format("%s.lambda_handler", var.name) 
+  handler           = "app_1.lambda_handler"
   s3_bucket         = aws_s3_bucket.app_1.id
   s3_key            = aws_s3_object.app_1.key
   source_code_hash  = data.archive_file.app_1.output_base64sha256
