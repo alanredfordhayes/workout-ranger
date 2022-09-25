@@ -39,7 +39,8 @@ def get_products():
                           'X-Shopify-Access-Token' : workoutranger_shopify_admin_api_access_token
                      }
     )
-    return r.data
+    products = r.data['products']
+    return products
 
 def lambda_handler(event, context):
     p = get_products()
