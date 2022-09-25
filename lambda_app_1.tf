@@ -1,4 +1,7 @@
 #APP1
+##Vars
+variable "AWS_ACCOUNT_NUMBER" {}
+
 ##Random
 resource "random_string" "random" {
   length           = 8
