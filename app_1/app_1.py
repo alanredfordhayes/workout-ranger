@@ -56,7 +56,7 @@ def update_table():
             response = client.put_item(
                 TableName=os.environ['TableName'],
                 Item={
-                    'id':{'S':p['id']}, 
+                    'id':{'N':int(p['id'])}, 
                     'title':{'S':p['title']}
                 }
             )
