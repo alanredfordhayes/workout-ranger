@@ -63,7 +63,7 @@ data "archive_file" "app_1" {
 }
 
 resource "aws_s3_bucket" "app_1" {
-  bucket_prefix = local.app_name
+  bucket_prefix = local.app_1_name
   force_destroy = true
 }
 
