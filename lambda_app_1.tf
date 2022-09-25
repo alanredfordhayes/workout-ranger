@@ -16,8 +16,6 @@ locals {
   ##aws_lambda_function
   aws_lambda_function_app_1_function_name = "${local.app_1_name}"
   aws_lambda_function_app_1_description   = "${local.app_1_name}"
-  aws_lambda_function_runtime             = "python3.9"
-  aws_lambda_function_app_1_handler       = "${local.app_1_name}.lambda_handler"
   ##aws_lambda_permission
   aws_lambda_permission_app_1_statement_id  = "AllowExecutionFromAPIGateway"
   aws_lambda_permission_app_1_action        = "lambda:InvokeFunction"
@@ -40,8 +38,8 @@ locals {
 resource "aws_lambda_function" "app_1" {
   function_name     = local.aws_lambda_function_app_1_function_name
   description       = local.aws_lambda_function_app_1_description
-  runtime           = local.aws_lambda_function_runtime
-  handler           = local.aws_lambda_function_app_1_handler
+  runtime           = "python3.9"
+  handler           = "${local.app_1_name}.lambda_handler"
   s3_bucket         = aws_s3_bucket.app_1.id
   s3_key            = aws_s3_object.app_1.key
   source_code_hash  = data.archive_file.app_1.output_base64sha256
