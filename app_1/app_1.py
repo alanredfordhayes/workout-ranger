@@ -16,7 +16,8 @@ def get_secret():
         elif e.response['Error']['Code'] == 'InvalidRequestException': raise e
         elif e.response['Error']['Code'] == 'ResourceNotFoundException': raise e
     else:
-        if 'SecretString' in get_secret_value_response: secret = get_secret_value_response['SecretString']; return secret
+        if 'SecretString' in get_secret_value_response: 
+            text_secret_data = json.loads(get_secret_value_response['SecretString']); workoutranger_shopify_admin_api_access_token = text_secret_data['merakiapikey']; return workoutranger_shopify_admin_api_access_token
         else: decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary']); return decoded_binary_secret
 
 def lambda_handler(event, context):
