@@ -5,6 +5,7 @@ import urllib3
 import resource
 import boto3
 import base64
+import os
 from botocore.exceptions import ClientError
 
 http = urllib3.PoolManager()
@@ -43,10 +44,25 @@ def get_products():
     products = products['products']
     return products
 
+def update_table():
+    client = boto3.client('dynamodb')
+    products = get_products()
+    products_list = []
+    for p in products:
+        try:
+            response = client.get_item(TableName=os.environ['TableName'],Key={'id':{'S':p.id}})
+        except:
+            response = client.put_item(TableName=os.environ['TableName'],Item={
+                'id':{'S':p.id}, 
+                'title':{'S':p.title}}
+            )
+        products_list.append(response)
+    return products_list                
+
 def lambda_handler(event, context):
-    p = get_products()
+    t = update_table
     return {
         'statusCode': 200,
         'body': json.dumps('Hello from Lambda!'),
-        'output' : p
+        'output' : t
     }

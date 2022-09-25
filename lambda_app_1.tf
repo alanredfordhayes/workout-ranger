@@ -54,6 +54,11 @@ resource "aws_lambda_function" "app_1" {
   s3_key            = aws_s3_object.app_1.key
   source_code_hash  = data.archive_file.app_1.output_base64sha256
   role              = aws_iam_role.app_1.arn
+  environment {
+    variables = {
+      TableName = local.app_1_name
+    }
+  }
 }
 
 resource "aws_lambda_permission" "app_1" {
