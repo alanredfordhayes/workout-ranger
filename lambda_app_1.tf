@@ -176,13 +176,7 @@ resource "aws_dynamodb_table" "app_1" {
     type = "S"
   }
 
-  ttl {
-    attribute_name = "TimeToExist"
-    enabled        = false
-  }
-
   tags = {
-    Name        = "dynamodb-table-1"
-    Environment = "production"
+    Name        = local.app_1_name
   }
 }
