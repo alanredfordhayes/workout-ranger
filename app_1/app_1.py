@@ -16,12 +16,11 @@ def get_secret():
         elif e.response['Error']['Code'] == 'InvalidRequestException': raise e
         elif e.response['Error']['Code'] == 'ResourceNotFoundException': raise e
     else:
-        if 'SecretString' in get_secret_value_response: secret = get_secret_value_response['SecretString']
-        else: decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary'])
-    return get_secret_value_response
+        if 'SecretString' in get_secret_value_response: secret = get_secret_value_response['SecretString']; return secret
+        else: decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary']); return decoded_binary_secret
 
 def lambda_handler(event, context):
-    # TODO implement
+    s = get_secret()
     return {
         'statusCode': 200,
         'body': json.dumps('Hello from Lambda!')
