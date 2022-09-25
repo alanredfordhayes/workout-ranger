@@ -17,7 +17,7 @@ variable "name"{
 
 ##LOCALS
 locals {
-  app_1_name = "${var.name}${random_string.random.result}"
+  app_1_name = "${var.name}-${random_string.random.result}-products"
   #LAMBDA
   ##aws_lambda_function
   aws_lambda_function_app_1_function_name = "${local.app_1_name}"
@@ -38,6 +38,10 @@ locals {
   #Cloudwatch
   ##aws_cloudwatch_log
   aws_cloudwatch_log_app_1_group_name = "${local.app_1_name}"
+  #Dynamodb
+  ##aws_dynamodb_table
+  aws_dynamodb_table_app_1_hashkey = "id"
+  aws_dynamodb_table_app_1_range_key = "title"
 }
 
 ##LAMBDA
@@ -145,4 +149,108 @@ resource "aws_iam_policy_attachment" "app_1" {
 resource "aws_cloudwatch_log_group" "app_1" {
   name = local.aws_cloudwatch_log_app_1_group_name
   retention_in_days = 30
+}
+
+resource "aws_dynamodb_table" "app_1" {
+  name           = local.app_1_name
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 20
+  write_capacity = 20
+  hash_key       = local.aws_dynamodb_table_app_1_hashkey
+  range_key      = local.aws_dynamodb_table_app_1_range_key
+
+  attribute {
+    name = "id"
+    type = "N"
+  }
+
+  attribute {
+    name = "title"
+    type = "S"
+  }
+
+  attribute {
+    name = "body_html"
+    type = "S"
+  }
+
+  attribute {
+    name = "vendor"
+    type = "S"
+  }
+
+  attribute {
+    name = "product_type"
+    type = "S"
+  }
+
+  attribute {
+    name = "product_type"
+    type = "S"
+  }
+
+  attribute {
+    name = "handle"
+    type = "S"
+  }
+
+  attribute {
+    name = "updated_at"
+    type = "S"
+  }
+
+  attribute {
+    name = "published_at"
+    type = "S"
+  }
+
+  attribute {
+    name = "template_suffix"
+    type = "S"
+  }
+
+  attribute {
+    name = "published_scope"
+    type = "S"
+  }
+
+  attribute {
+    name = "tags"
+    type = "S"
+  }
+
+  attribute {
+    name = "admin_graphql_api_id"
+    type = "S"
+  }
+
+  attribute {
+    name = "variants"
+    type = "S"
+  }
+
+  attribute {
+    name = "options"
+    type = "S"
+  }
+
+  attribute {
+    name = "images"
+    type = "S"
+  }
+
+  attribute {
+    name = "image"
+    type = "S"
+  }
+
+  ttl {
+    attribute_name = "TimeToExist"
+    enabled        = false
+  }
+
+  tags = {
+    Name        = "dynamodb-table-1"
+    Environment = "production"
+  }
 }
