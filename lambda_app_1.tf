@@ -40,10 +40,10 @@ locals {
 resource "aws_lambda_function" "app_1" {
   function_name     = local.aws_lambda_function_app_1_function_name
   description       = local.aws_lambda_function_app_1_description
-  s3_bucket         = aws_s3_bucket.app_1.id
-  s3_key            = aws_s3_object.app_1.key
   runtime           = local.aws_lambda_function_app_1_runtime
   handler           = local.aws_lambda_function_app_1_handler
+  s3_bucket         = aws_s3_bucket.app_1.id
+  s3_key            = aws_s3_object.app_1.key
   source_code_hash  = data.archive_file.app_1.output_base64sha256
   role              = aws_iam_role.app_1.arn
 }
