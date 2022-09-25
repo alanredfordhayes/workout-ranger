@@ -110,9 +110,25 @@ resource "aws_iam_policy" "app_1" {
           Version = "2012-10-17"
           Statement = [
             {
-              Effect = "Allow"
-              Action = "logs:CreateLogGroup"
-              Resource = "*"
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": [
+                    "secretsmanager:GetRandomPassword",
+                    "logs:CreateLogGroup",
+                    "secretsmanager:ListSecrets"
+                ],
+                "Resource": "*"
+            },
+            {
+                "Sid": "VisualEditor1",
+                "Effect": "Allow",
+                "Action": [
+                    "secretsmanager:GetResourcePolicy",
+                    "secretsmanager:GetSecretValue",
+                    "secretsmanager:DescribeSecret",
+                    "secretsmanager:ListSecretVersionIds"
+                ],
+                "Resource": "arn:aws:secretsmanager:us-east-1:216608214837:secret:workoutranger_shopify_admin_api_access_token-6vDz4g"
             }
           ]
         }
