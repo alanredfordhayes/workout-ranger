@@ -57,7 +57,7 @@ def load_sup_db(key, p):
             if k == 'id': i_dict[k] = {'N' : str(i[k])}
             elif k == 'product_id': i_dict[k] = {'N' : str(i[k])}
             else: 
-                item_type = type(i[]k)
+                item_type = type(i[k])
                 if item_type == 'str':
                     i_dict[k] = {'S' : i[k]}
                 elif item_type == 'int':
