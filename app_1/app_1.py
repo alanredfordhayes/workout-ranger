@@ -84,7 +84,7 @@ def update_table():
             response = client.get_item(TableName=os.environ['TableName1'],Key={'id':{'S':p.id}})
         except:
             response = client.put_item(
-                TableName=os.environ['TableName'],
+                TableName=os.environ['TableName1'],
                 Item=Item
             )
         products_list.append(response)
