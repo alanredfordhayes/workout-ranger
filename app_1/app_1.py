@@ -45,6 +45,21 @@ def get_products():
     print(type)
     return products
 
+def load_sup_db(key):
+    client = boto3.client('dynamodb')
+    if key == 'variants': TableName = 'TableName2'
+    elif key == 'options': TableName = 'TableName3'
+    elif key == 'images': TableName = 'TableName4'
+    elif key == 'image': TableName = 'TableName5'
+    for i in p[key]:
+        i_dict = {}
+        for k in i:
+            if k == 'id': i_dict[k] = {'N' : str(i[k])}
+            elif k == 'product_id': i_dict[k] = {'N' : str(i[k])}
+            else: i_dict[k] = {'S' : str(i[k])}
+    try: response = client.get_item(TableName=os.environ[TableName],Key={'id':{'S':i.id}})
+    except: response = client.put_item(TableName=os.environ['TableName2'],Item=i_dict)
+
 def update_table():
     client = boto3.client('dynamodb')
     products = get_products()
@@ -52,41 +67,14 @@ def update_table():
     for p in products:
         Item = {}
         for key in p:
-            if key == 'id':
-                Item[key] = {'N' : str(p[key])}
-            elif key == 'variants':
-                for i in p[key]:
-                    i_dict = {}
-                    for k in i:
-                        if k == 'id':
-                            i_dict[k] = {'N' : str(i[k])}
-                        elif k == 'product_id':
-                            i_dict[k] = {'N' : str(i[k])}
-                        else:
-                            i_dict[k] = {'S' : str(i[k])}
-                try:
-                    response = client.get_item(TableName=os.environ['TableName2'],Key={'id':{'S':i.id}})
-                except:
-                    response = client.put_item(
-                        TableName=os.environ['TableName2'],
-                        Item=i_dict
-                    )
-            elif key == 'options':
-                print()
-            elif key == 'images':
-                print()
-            elif key == 'image':
-                print()
-            else:
-                Item[key] = {'S' : p[key]}
-        
-        try:
-            response = client.get_item(TableName=os.environ['TableName1'],Key={'id':{'S':p.id}})
-        except:
-            response = client.put_item(
-                TableName=os.environ['TableName1'],
-                Item=Item
-            )
+            if key == 'id': Item[key] = {'N' : str(p[key])}
+            elif key == 'variants': load_sup_db(key)
+            elif key == 'options': load_sup_db(key)
+            elif key == 'images': load_sup_db(key)
+            elif key == 'image': load_sup_db(key)
+            else: Item[key] = {'S' : p[key]}
+        try: response = client.get_item(TableName=os.environ['TableName1'],Key={'id':{'S':p.id}})
+        except: response = client.put_item(TableName=os.environ['TableName1'],Item=Item)
         products_list.append(response)
     return products_list                
 
