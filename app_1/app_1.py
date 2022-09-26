@@ -63,10 +63,10 @@ def update_table():
         Item = {}
         for key in p:
             if key == 'id': Item[key] = {'N' : str(p[key])}
-            elif key == 'variants': variants = p[key]; load_sup_db(variants, 'TableName1')
-            elif key == 'options': options = p[key]; load_sup_db(options, 'TableName2')
-            elif key == 'images': images = p[key]; load_sup_db(images, 'TableName3')
-            elif key == 'image': image = p[key]; load_sup_db(image, 'TableName4')
+            elif key == 'variants': variants = p[key]; load_sup_db(variants, 'TableName2')
+            elif key == 'options': options = p[key]; load_sup_db(options, 'TableName3')
+            elif key == 'images': images = p[key]; load_sup_db(images, 'TableName4')
+            elif key == 'image': image = p[key]; load_sup_db(image, 'TableName5')
             else: Item[key] = {'S' : p[key]}
         try: response = client.get_item(TableName=os.environ['TableName1'],Key={'id':{'S':p.id}})
         except: response = client.put_item(TableName=os.environ['TableName1'],Item=Item)
