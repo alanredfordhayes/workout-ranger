@@ -50,7 +50,7 @@ def load_sup_db(suplist, tablename):
     for p in suplist:
         Item = {}
         for key in p:
-            if key == 'id': Item[key] = {'N' : str(p[key])}
+            if key == 'id': Item[key] = {'N' : int(p[key])}
             if key == 'product_id': Item[key] = {'N' : str(p[key])}
             else: Item[key] = {'S' : p[key]}
         try: response = client.get_item(TableName=os.environ[tablename],Key={'id':{'S':p.id}})
