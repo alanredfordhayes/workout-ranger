@@ -57,17 +57,20 @@ def load_sup_db(key, p):
             if k == 'id': i_dict[k] = {'N' : str(i[k])}
             elif k == 'product_id': i_dict[k] = {'N' : str(i[k])}
             else: 
-                item_type = type(i[k])
-                if item_type == 'str':
-                    i_dict[k] = {'S' : i[k]}
-                elif item_type == 'int':
-                    i_dict[k] = {'N' : i[k]}
-                elif item_type == 'float':
-                    i_dict[k] = {'N' : i[k]}
-                elif item_type == 'NoneType':
+                if None != i[k]:
+                    item_type = type(i[k])
+                    if item_type == 'str':
+                        i_dict[k] = {'S' : i[k]}
+                    elif item_type == 'int':
+                        i_dict[k] = {'N' : i[k]}
+                    elif item_type == 'float':
+                        i_dict[k] = {'N' : i[k]}
+                    elif item_type == 'NoneType':
+                        i_dict[k] = {'S' : 'None'}
+                    elif item_type == 'bool':
+                        i_dict[k] = {'B' : i[k]}
+                else:
                     i_dict[k] = {'S' : 'None'}
-                elif item_type == 'bool':
-                    i_dict[k] = {'B' : i[k]}
     try: response = client.get_item(TableName=os.environ[TableName],Key={'id':{'S':i.id}})
     except: response = client.put_item(TableName=os.environ['TableName2'],Item=i_dict)
 
