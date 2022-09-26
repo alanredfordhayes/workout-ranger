@@ -56,7 +56,7 @@ def load_sup_db(key, p):
         for k in i:
             if k == 'id': i_dict[k] = {'N' : str(i[k])}
             elif k == 'product_id': i_dict[k] = {'N' : str(i[k])}
-            else: i_dict[k] = {'S' : str(i[k])}
+            else: i_dict[k] = {'S' : i[k]}
     try: response = client.get_item(TableName=os.environ[TableName],Key={'id':{'S':i.id}})
     except: response = client.put_item(TableName=os.environ['TableName2'],Item=i_dict)
 
