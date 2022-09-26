@@ -58,9 +58,9 @@ def load_sup_db(suplist, tablename):
 def load_image_db(img_dict, tablename):
     client = boto3.client('dynamodb') 
     Item = {}
-    Item['id'] = img_dict['id'] 
-    Item['product_id'] = img_dict['product_id']
-    Item['src'] = img_dict['src']
+    Item['id'] = str(img_dict['id']) 
+    Item['product_id'] = str(img_dict['product_id'])
+    Item['src'] = str(img_dict['src'])
     try: response = client.get_item(TableName=os.environ[tablename],Key={'id':{'S':img_dict.id}})
     except: response = client.put_item(TableName=os.environ[tablename],Item=Item)
 
