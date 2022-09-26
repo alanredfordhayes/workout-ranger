@@ -57,6 +57,7 @@ def load_sup_db(key, p):
             if k == 'id': i_dict[k] = {'N' : str(i[k])}
             elif k == 'product_id': i_dict[k] = {'N' : str(i[k])}
             else: 
+                print(i[k])
                 if i[k] is not None:
                     item_type = type(i[k])
                     if item_type == 'str':
