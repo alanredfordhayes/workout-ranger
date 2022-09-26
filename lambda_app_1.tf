@@ -22,6 +22,7 @@ locals {
   ##aws_lambda_function
   aws_lambda_function_app_1_function_name = "${local.app_1_name}"
   aws_lambda_function_app_1_description   = "${local.app_1_name}"
+  aws_lambda_function_app_1_timeout       = 4
   ##aws_lambda_permission
   aws_lambda_permission_app_1_statement_id  = "AllowExecutionFromAPIGateway"
   aws_lambda_permission_app_1_action        = "lambda:InvokeFunction"
@@ -48,6 +49,7 @@ locals {
 resource "aws_lambda_function" "app_1" {
   function_name     = local.aws_lambda_function_app_1_function_name
   description       = local.aws_lambda_function_app_1_description
+  timeout           = local.aws_lambda_function_app_1_timeout
   runtime           = "python3.9"
   handler           = "app_1.lambda_handler"
   s3_bucket         = aws_s3_bucket.app_1.id
