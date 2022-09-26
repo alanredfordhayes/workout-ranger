@@ -50,15 +50,38 @@ def update_table():
     products = get_products()
     products_list = []
     for p in products:
-        Item={}
+        Item = {}
         for key in p:
             if key == 'id':
                 Item[key] = {'N' : str(p[key])}
+            elif key == 'variants':
+                for i in p[key]:
+                    i_dict = {}
+                    for k in i:
+                        if k == 'id':
+                            i_dict[k] = {'N' : str(i[k])}
+                        elif k == 'product_id':
+                            i_dict[k] = {'N' : str(i[k])}
+                        else:
+                            i_dict[k] = {'S' : str(i[k])}
+                try:
+                    response = client.get_item(TableName=os.environ['TableName2'],Key={'id':{'S':i.id}})
+                except:
+                    response = client.put_item(
+                        TableName=os.environ['TableName2'],
+                        Item=Item
+                    )
+            elif key == 'options':
+                print()
+            elif key == 'images':
+                print()
+            elif key == 'image':
+                print()
             else:
                 Item[key] = {'S' : p[key]}
         
         try:
-            response = client.get_item(TableName=os.environ['TableName'],Key={'id':{'S':p.id}})
+            response = client.get_item(TableName=os.environ['TableName1'],Key={'id':{'S':p.id}})
         except:
             response = client.put_item(
                 TableName=os.environ['TableName'],

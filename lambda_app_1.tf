@@ -41,6 +41,11 @@ locals {
   aws_cloudwatch_log_app_1_group_name = "${local.app_1_name}"
   #Dynamodb
   ##aws_dynamodb_table
+  aws_dynamodb_table_app_1_db_1 = "${local.app_1_name}-main"
+  aws_dynamodb_table_app_1_db_2 = "${local.app_1_name}-variants"
+  aws_dynamodb_table_app_1_db_3 = "${local.app_1_name}-options"
+  aws_dynamodb_table_app_1_db_4 = "${local.app_1_name}-images"
+  aws_dynamodb_table_app_1_db_5 = "${local.app_1_name}-image"
   aws_dynamodb_table_app_1_hashkey = "id"
   aws_dynamodb_table_app_1_range_key = "title"
 }
@@ -58,7 +63,11 @@ resource "aws_lambda_function" "app_1" {
   role              = aws_iam_role.app_1.arn
   environment {
     variables = {
-      TableName = local.app_1_name
+      TableName1 = local.aws_dynamodb_table_app_1_db_1
+      TableName2 = local.aws_dynamodb_table_app_1_db_2
+      TableName3 = local.aws_dynamodb_table_app_1_db_3
+      TableName4 = local.aws_dynamodb_table_app_1_db_4
+      TableName5 = local.aws_dynamodb_table_app_1_db_5
     }
   }
 }
@@ -144,7 +153,11 @@ resource "aws_iam_policy" "app_1" {
                   "secretsmanager:ListSecretVersionIds"
               ],
               "Resource": [
-                  "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/${local.app_1_name}",
+                  "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/${local.aws_dynamodb_table_app_1_db_1}",
+                  "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/${local.aws_dynamodb_table_app_1_db_2}",
+                  "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/${local.aws_dynamodb_table_app_1_db_3}",
+                  "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/${local.aws_dynamodb_table_app_1_db_4}",
+                  "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/${local.aws_dynamodb_table_app_1_db_5}",
                   "arn:aws:secretsmanager:us-east-1:${var.AWS_ACCOUNT_NUMBER}:secret:workoutranger_shopify_admin_api_access_token-6vDz4g"
               ]
             }
@@ -165,8 +178,8 @@ resource "aws_cloudwatch_log_group" "app_1" {
   retention_in_days = 30
 }
 
-resource "aws_dynamodb_table" "app_1" {
-  name           = local.app_1_name
+resource "aws_dynamodb_table" "db_1" {
+  name           = local.aws_dynamodb_table_app_1_db_1
   billing_mode   = "PROVISIONED"
   read_capacity  = 20
   write_capacity = 20
@@ -181,6 +194,98 @@ resource "aws_dynamodb_table" "app_1" {
   attribute {
     name = "title"
     type = "S"
+  }
+
+  tags = {
+    Name        = local.app_1_name
+  }
+}
+
+resource "aws_dynamodb_table" "db_2" {
+  name           = local.aws_dynamodb_table_app_1_db_2
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 20
+  write_capacity = 20
+  hash_key       = local.aws_dynamodb_table_app_1_hashkey
+  range_key      = local.aws_dynamodb_table_app_1_range_key
+
+  attribute {
+    name = "id"
+    type = "N"
+  }
+
+  attribute {
+    name = "product_id"
+    type = "N"
+  }
+
+  tags = {
+    Name        = local.app_1_name
+  }
+}
+
+resource "aws_dynamodb_table" "db_3" {
+  name           = local.aws_dynamodb_table_app_1_db_3
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 20
+  write_capacity = 20
+  hash_key       = local.aws_dynamodb_table_app_1_hashkey
+  range_key      = local.aws_dynamodb_table_app_1_range_key
+
+  attribute {
+    name = "id"
+    type = "N"
+  }
+
+  attribute {
+    name = "product_id"
+    type = "N"
+  }
+
+  tags = {
+    Name        = local.app_1_name
+  }
+}
+
+resource "aws_dynamodb_table" "db_4" {
+  name           = local.aws_dynamodb_table_app_1_db_4
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 20
+  write_capacity = 20
+  hash_key       = local.aws_dynamodb_table_app_1_hashkey
+  range_key      = local.aws_dynamodb_table_app_1_range_key
+
+  attribute {
+    name = "id"
+    type = "N"
+  }
+
+  attribute {
+    name = "product_id"
+    type = "N"
+  }
+
+  tags = {
+    Name        = local.app_1_name
+  }
+}
+
+resource "aws_dynamodb_table" "db_5" {
+  name           = local.aws_dynamodb_table_app_1_db_5
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 20
+  write_capacity = 20
+  hash_key       = local.aws_dynamodb_table_app_1_hashkey
+  range_key      = local.aws_dynamodb_table_app_1_range_key
+
+  attribute {
+    name = "id"
+    type = "N"
+  }
+
+  attribute {
+    name = "product_id"
+    type = "N"
   }
 
   tags = {
