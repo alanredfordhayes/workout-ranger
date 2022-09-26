@@ -46,8 +46,10 @@ locals {
   aws_dynamodb_table_app_1_db_3 = "${local.app_1_name}-options"
   aws_dynamodb_table_app_1_db_4 = "${local.app_1_name}-images"
   aws_dynamodb_table_app_1_db_5 = "${local.app_1_name}-image"
-  aws_dynamodb_table_app_1_hashkey = "id"
-  aws_dynamodb_table_app_1_range_key = "title"
+  aws_dynamodb_table_app_1_db_main_hashkey = "id"
+  aws_dynamodb_table_app_1_db_main_range_key = "title"
+  aws_dynamodb_table_app_1_db_sup_hashkey = "id"
+  aws_dynamodb_table_app_1_db_sup_range_key = "product_id"
 }
 
 ##LAMBDA
@@ -183,8 +185,8 @@ resource "aws_dynamodb_table" "db_1" {
   billing_mode   = "PROVISIONED"
   read_capacity  = 20
   write_capacity = 20
-  hash_key       = local.aws_dynamodb_table_app_1_hashkey
-  range_key      = local.aws_dynamodb_table_app_1_range_key
+  hash_key       = local.aws_dynamodb_table_app_1_db_main_hashkey
+  range_key      = local.aws_dynamodb_table_app_1_db_main_range_key
 
   attribute {
     name = "id"
@@ -206,8 +208,8 @@ resource "aws_dynamodb_table" "db_2" {
   billing_mode   = "PROVISIONED"
   read_capacity  = 20
   write_capacity = 20
-  hash_key       = local.aws_dynamodb_table_app_1_hashkey
-  range_key      = local.aws_dynamodb_table_app_1_range_key
+  hash_key       = local.aws_dynamodb_table_app_1_db_sup_hashkey
+  range_key      = local.aws_dynamodb_table_app_1_db_sup_range_key
 
   attribute {
     name = "id"
@@ -220,7 +222,7 @@ resource "aws_dynamodb_table" "db_2" {
   }
 
   tags = {
-    Name        = local.app_1_name
+    Name        = local.aws_dynamodb_table_app_1_db_2
   }
 }
 
@@ -229,8 +231,8 @@ resource "aws_dynamodb_table" "db_3" {
   billing_mode   = "PROVISIONED"
   read_capacity  = 20
   write_capacity = 20
-  hash_key       = local.aws_dynamodb_table_app_1_hashkey
-  range_key      = local.aws_dynamodb_table_app_1_range_key
+  hash_key       = local.aws_dynamodb_table_app_1_db_sup_hashkey
+  range_key      = local.aws_dynamodb_table_app_1_db_sup_range_key
 
   attribute {
     name = "id"
@@ -243,7 +245,7 @@ resource "aws_dynamodb_table" "db_3" {
   }
 
   tags = {
-    Name        = local.app_1_name
+    Name        = local.aws_dynamodb_table_app_1_db_3
   }
 }
 
@@ -252,8 +254,8 @@ resource "aws_dynamodb_table" "db_4" {
   billing_mode   = "PROVISIONED"
   read_capacity  = 20
   write_capacity = 20
-  hash_key       = local.aws_dynamodb_table_app_1_hashkey
-  range_key      = local.aws_dynamodb_table_app_1_range_key
+  hash_key       = local.aws_dynamodb_table_app_1_db_sup_hashkey
+  range_key      = local.aws_dynamodb_table_app_1_db_sup_range_key
 
   attribute {
     name = "id"
@@ -266,7 +268,7 @@ resource "aws_dynamodb_table" "db_4" {
   }
 
   tags = {
-    Name        = local.app_1_name
+    Name        = local.aws_dynamodb_table_app_1_db_4
   }
 }
 
@@ -275,8 +277,8 @@ resource "aws_dynamodb_table" "db_5" {
   billing_mode   = "PROVISIONED"
   read_capacity  = 20
   write_capacity = 20
-  hash_key       = local.aws_dynamodb_table_app_1_hashkey
-  range_key      = local.aws_dynamodb_table_app_1_range_key
+  hash_key       = local.aws_dynamodb_table_app_1_db_sup_hashkey
+  range_key      = local.aws_dynamodb_table_app_1_db_sup_range_key
 
   attribute {
     name = "id"
@@ -289,6 +291,6 @@ resource "aws_dynamodb_table" "db_5" {
   }
 
   tags = {
-    Name        = local.app_1_name
+    Name        = local.aws_dynamodb_table_app_1_db_5
   }
 }
