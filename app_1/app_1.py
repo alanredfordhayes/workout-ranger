@@ -45,7 +45,7 @@ def get_products():
     print(type)
     return products
 
-def load_sup_db(key):
+def load_sup_db(key, p):
     client = boto3.client('dynamodb')
     if key == 'variants': TableName = 'TableName2'
     elif key == 'options': TableName = 'TableName3'
@@ -68,10 +68,10 @@ def update_table():
         Item = {}
         for key in p:
             if key == 'id': Item[key] = {'N' : str(p[key])}
-            elif key == 'variants': load_sup_db(key)
-            elif key == 'options': load_sup_db(key)
-            elif key == 'images': load_sup_db(key)
-            elif key == 'image': load_sup_db(key)
+            elif key == 'variants': load_sup_db(key, p)
+            elif key == 'options': load_sup_db(key, p)
+            elif key == 'images': load_sup_db(key, p)
+            elif key == 'image': load_sup_db(key, p)
             else: Item[key] = {'S' : p[key]}
         try: response = client.get_item(TableName=os.environ['TableName1'],Key={'id':{'S':p.id}})
         except: response = client.put_item(TableName=os.environ['TableName1'],Item=Item)
