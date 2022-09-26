@@ -45,36 +45,16 @@ def get_products():
     print(type)
     return products
 
-def load_sup_db(key, p):
-    client = boto3.client('dynamodb')
-    if key == 'variants': TableName = 'TableName2'
-    elif key == 'options': TableName = 'TableName3'
-    elif key == 'images': TableName = 'TableName4'
-    elif key == 'image': TableName = 'TableName5'
-    for i in p[key]:
-        i_dict = {}
-        for k in i:
-            if k == 'id': i_dict[k] = {'N' : str(i[k])}
-            elif k == 'product_id': i_dict[k] = {'N' : str(i[k])}
-            else: 
-                if k == "i":
-                    print(k)
-                elif i[k] is not None:
-                    item_type = type(i[k])
-                    if item_type == 'str':
-                        i_dict[k] = {'S' : i[k]}
-                    elif item_type == 'int':
-                        i_dict[k] = {'N' : i[k]}
-                    elif item_type == 'float':
-                        i_dict[k] = {'N' : i[k]}
-                    elif item_type == 'NoneType':
-                        i_dict[k] = {'S' : 'None'}
-                    elif item_type == 'bool':
-                        i_dict[k] = {'B' : i[k]}
-                else:
-                    i_dict[k] = {'S' : 'Empty'}
-    try: response = client.get_item(TableName=os.environ[TableName],Key={'id':{'S':i.id}})
-    except: response = client.put_item(TableName=os.environ['TableName2'],Item=i_dict)
+def load_sup_db(suplist, tablename):
+    client = boto3.client('dynamodb') 
+    for p in suplist:
+        Item = {}
+        for key in p:
+            if key == 'id': Item[key] = {'N' : str(p[key])}
+            if key == 'product_id': Item[key] = {'N' : str(p[key])}
+            else: Item[key] = {'S' : p[key]}
+        try: response = client.get_item(TableName=os.environ[tablename],Key={'id':{'S':p.id}})
+        except: response = client.put_item(TableName=os.environ[tablename],Item=Item)
 
 def update_table():
     client = boto3.client('dynamodb')
@@ -84,10 +64,10 @@ def update_table():
         Item = {}
         for key in p:
             if key == 'id': Item[key] = {'N' : str(p[key])}
-            elif key == 'variants': load_sup_db(key, p)
-            elif key == 'options': load_sup_db(key, p)
-            elif key == 'images': load_sup_db(key, p)
-            elif key == 'image': load_sup_db(key, p)
+            elif key == 'variants': variants = p[key]; load_sup_db(variants, 'TableName1')
+            elif key == 'options': options = p[key]; load_sup_db(options, 'TableName2')
+            elif key == 'images': images = p[key]; load_sup_db(images, 'TableName3')
+            elif key == 'image': image = p[key]; load_sup_db(image, 'TableName4')
             else: Item[key] = {'S' : p[key]}
         try: response = client.get_item(TableName=os.environ['TableName1'],Key={'id':{'S':p.id}})
         except: response = client.put_item(TableName=os.environ['TableName1'],Item=Item)
