@@ -69,7 +69,7 @@ def update_table():
                 except:
                     response = client.put_item(
                         TableName=os.environ['TableName2'],
-                        Item=Item
+                        Item=i_dict
                     )
             elif key == 'options':
                 print()
