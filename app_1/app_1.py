@@ -55,6 +55,15 @@ def load_sup_db(suplist, tablename):
         try: response = client.get_item(TableName=os.environ[tablename],Key={'id':{'S':p.id}})
         except: response = client.put_item(TableName=os.environ[tablename],Item=Item)
 
+def load_image_db(img_dict, tablename):
+    client = boto3.client('dynamodb') 
+    Item = {}
+    Item['id'] = img_dict['id'] 
+    Item['product_id'] = img_dict['product_id']
+    Item['src'] = img_dict['src']
+    try: response = client.get_item(TableName=os.environ[tablename],Key={'id':{'S':img_dict.id}})
+    except: response = client.put_item(TableName=os.environ[tablename],Item=Item)
+
 def update_table():
     client = boto3.client('dynamodb')
     products = get_products()
@@ -66,7 +75,7 @@ def update_table():
             elif key == 'variants': variants = p[key]; load_sup_db(variants, 'TableName2')
             elif key == 'options': options = p[key]; load_sup_db(options, 'TableName3')
             elif key == 'images': images = p[key]; load_sup_db(images, 'TableName4')
-            elif key == 'image': image = p[key]; load_sup_db(image, 'TableName5')
+            elif key == 'image': image = p[key]; load_image_db(image, 'TableName5')
             else: Item[key] = {'S' : p[key]}
         try: response = client.get_item(TableName=os.environ['TableName1'],Key={'id':{'S':p.id}})
         except: response = client.put_item(TableName=os.environ['TableName1'],Item=Item)
