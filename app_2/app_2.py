@@ -13,6 +13,7 @@ def scan_products_db():
 
 def create_social_media_post():
     product_list = scan_products_db()
+    print(product_list)
     sm_post = {}
     num = 0
     for product in product_list: 
