@@ -18,7 +18,7 @@ def create_social_media_post():
     for product in product_list: 
         num = num + 1
         sm_post[num] = {
-            'id' : product['id']
+            'id' : product['id']['N']
         }
     return sm_post
 
