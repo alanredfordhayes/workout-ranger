@@ -61,7 +61,7 @@ def create_image (image, cta, price, title, token):
     return(r.data)
 
 def lambda_handler(event, context):
-    s = scan_products_db()
+    s = create_social_media_post()
     return {
         'statusCode': 200,
         'body': json.dumps('Hello from Lambda!'),
