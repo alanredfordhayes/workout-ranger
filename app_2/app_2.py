@@ -3,10 +3,11 @@ import urllib3
 import boto3
 import base64
 from botocore.exceptions import ClientError
+import os
 
 def scan_products_db():
     client = boto3.client('dynamodb')
-    try: response = client.scan(TableName='TableName1')
+    try: response = client.scan(TableName=os.environ['TableName1'])
     except: response = 'Could not scan items'
     return response
 
