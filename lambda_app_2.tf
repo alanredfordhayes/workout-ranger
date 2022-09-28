@@ -17,7 +17,7 @@ locals {
   aws_iam_role_policy_attachment_app_2_policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   ##aws_iam_policy
   aws_iam_policy_app_2_name = "${local.app_2_name}"
-  aws_iam_policy_app1_path  = "/"
+  aws_iam_policy_app_2_path  = "/"
   aws_iam_policy_app_2_description = "${local.app_2_name}"
   #Cloudwatch
   ##aws_cloudwatch_log
@@ -97,7 +97,7 @@ resource "aws_iam_role_policy_attachment" "app_2" {
 
 resource "aws_iam_policy" "app_2" {
     name = local.aws_iam_policy_app_2_name
-    path = local.aws_iam_policy_app1_path
+    path = local.aws_iam_policy_app_2_path
     description = local.aws_iam_policy_app_2_description
     policy = jsonencode(
         {
