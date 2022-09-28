@@ -13,12 +13,15 @@ def scan_products_db():
 
 def create_social_media_post():
     product_list = scan_products_db()
-    print(product_list)
+    product_list_items = product_list['Items']
+    product_list_count = product_list['Count']
+    product_list_scannedcount = product_list['ScannedCount']
+    product_list_responseMetadata = product_list['ResponseMetadata']
     sm_post = {}
     num = 0
-    for product in product_list: 
+    for item in product_list_items: 
         num = num + 1
-        print(product)
+        print(item)
         sm_post[num] = {
             'number' : num
         }
