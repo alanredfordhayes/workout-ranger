@@ -11,6 +11,12 @@ def scan_products_db():
     except: response = 'Could not scan items'
     return response
 
+def create_social_media_post():
+    product_list = scan_products_db()
+    for product in product_list: 
+        product_title = product['title']
+        print(product_title)
+
 def get_secret():
     secret_name = "placid"
     region_name = "us-east-1"
