@@ -123,6 +123,7 @@ resource "aws_iam_policy" "app_2" {
                   "dynamodb:GetItem",
                   "dynamodb:UpdateItem",
                   "dynamodb:UpdateTable",
+                  "dynamodb:Scan",
                   "secretsmanager:ListSecretVersionIds"
               ],
               "Resource": [
