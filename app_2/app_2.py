@@ -13,9 +13,14 @@ def scan_products_db():
 
 def create_social_media_post():
     product_list = scan_products_db()
+    sm_post = {}
+    num = 0
     for product in product_list: 
-        product_title = product['title']
-        print(product_title)
+        num = num + 1
+        sm_post[num] = {
+            'id' : product['id']
+        }
+    return sm_post
 
 def get_secret():
     secret_name = "placid"
