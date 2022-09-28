@@ -54,6 +54,18 @@ def load_sup_db(suplist, tablename):
             elif key == 'product_id': value = p[key]; value = str(value); Item[key] = {'N' : value}
         try: response = client.get_item(TableName=os.environ[tablename],Key={'id':{'S':p.id}})
         except: response = client.put_item(TableName=os.environ[tablename],Item=Item)
+        
+def load_sup_db_variants(suplist, tablename):
+    client = boto3.client('dynamodb') 
+    for p in suplist:
+        Item = {}
+        for key in p:
+            if key == 'id': value = p[key]; value = str(value); Item[key] = {'N' : value}
+            elif key == 'product_id': value = p[key]; value = str(value); Item[key] = {'N' : value}
+            elif key == 'title': value = p[key]; value = str(value); Item[key] = {'S' : value}
+            elif key == 'price': value = p[key]; value = str(value); Item[key] = {'S' : value}
+        try: response = client.get_item(TableName=os.environ[tablename],Key={'id':{'S':p.id}})
+        except: response = client.put_item(TableName=os.environ[tablename],Item=Item)
 
 def load_image_db(img_dict, tablename):
     client = boto3.client('dynamodb') 
@@ -72,7 +84,7 @@ def update_table():
         Item = {}
         for key in p:
             if key == 'id': Item[key] = {'N' : str(p[key])}
-            elif key == 'variants': variants = p[key]; load_sup_db(variants, 'TableName2')
+            elif key == 'variants': variants = p[key]; load_sup_db_variants(variants, 'TableName2')
             elif key == 'options': options = p[key]; load_sup_db(options, 'TableName3')
             elif key == 'images': images = p[key]; load_sup_db(images, 'TableName4')
             elif key == 'image': image = p[key]; load_image_db(image, 'TableName5')

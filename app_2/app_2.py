@@ -23,7 +23,7 @@ def create_social_media_post():
         num = num + 1
         sm_post[num] = {
             'number' : num,
-            'title' : item['title']
+            'title' : item['title']['S']
         }
     return sm_post
 
