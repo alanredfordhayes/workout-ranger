@@ -23,7 +23,8 @@ def create_social_media_post():
         num = num + 1
         sm_post[num] = {
             'number' : num,
-            'title' : item['title']['S']
+            'title' : item['title']['S'],
+            'id' : item['id']['N']
         }
     return sm_post
 
@@ -67,7 +68,7 @@ def create_image (image, cta, price, title, token):
         }
     )
     bearer_token = 'Bearer ' + token
-    r = http.request('POST', 'https://api.placid.app/api/rest/ysr4e4n8l', headers={'Content-Type': 'application/json', 'Authorization': bearer_token }, body=encoded_body)
+    r = http.request('POST', 'https://api.placid.app/api/rest/b3y0kkhnt', headers={'Content-Type': 'application/json', 'Authorization': bearer_token }, body=encoded_body)
     return(r.data)
 
 def lambda_handler(event, context):
