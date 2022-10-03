@@ -12,6 +12,7 @@ def scan_products_db():
     return response
 
 def create_social_media_post():
+    client = boto3.client('dynamodb')
     product_list = scan_products_db()
     product_list_items = product_list['Items']
     product_list_count = product_list['Count']
@@ -20,11 +21,13 @@ def create_social_media_post():
     sm_post = {}
     num = 0
     for item in product_list_items: 
+        response = client.get_item(TableName=os.environ['TableName5'],Key={'id': item['id']['N']})
         num = num + 1
         sm_post[num] = {
             'number' : num,
             'title' : item['title']['S'],
-            'id' : item['id']['N']
+            'id' : item['id']['N'],
+            'image' : response
         }
     return sm_post
 
