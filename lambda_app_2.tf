@@ -107,43 +107,46 @@ resource "aws_iam_policy" "app_2" {
     path = local.aws_iam_policy_app_2_path
     description = local.aws_iam_policy_app_2_description
     policy = jsonencode(
-        {
-          Version = "2012-10-17"
-          Statement = [
+      {
+        "Version": "2012-10-17",
+        "Statement": [
             {
-              "Sid": "VisualEditor0",
-              "Effect": "Allow",
-              "Action": [
-                  "secretsmanager:GetRandomPassword",
-                  "logs:CreateLogGroup",
-                  "secretsmanager:ListSecrets"              ],
-              "Resource": "*"
+                "Sid": "VisualEditor0",
+                "Effect": "Allow",
+                "Action": [
+                    "secretsmanager:GetRandomPassword",
+                    "logs:CreateLogGroup",
+                    "secretsmanager:ListSecrets"
+                ],
+                "Resource": "*"
             },
             {
-              "Sid": "VisualEditor1",
-              "Effect": "Allow",
-              "Action": [
-                  "secretsmanager:GetResourcePolicy",
-                  "secretsmanager:GetSecretValue",
-                  "dynamodb:PutItem",
-                  "secretsmanager:DescribeSecret",
-                  "dynamodb:GetItem",
-                  "dynamodb:UpdateItem",
-                  "dynamodb:UpdateTable",
-                  "dynamodb:Scan",
-                  "secretsmanager:ListSecretVersionIds"
-              ],
-              "Resource": [
-                  "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/${local.aws_dynamodb_table_app_1_db_1}",
-                  "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/${local.aws_dynamodb_table_app_1_db_2}",
-                  "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/${local.aws_dynamodb_table_app_1_db_3}",
-                  "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/${local.aws_dynamodb_table_app_1_db_4}",
-                  "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/${local.aws_dynamodb_table_app_1_db_5}",
-                  "arn:aws:secretsmanager:us-east-1:${var.AWS_ACCOUNT_NUMBER}:secret:placid-JmBBUn"
-              ]
+                "Sid": "VisualEditor1",
+                "Effect": "Allow",
+                "Action": [
+                    "secretsmanager:GetResourcePolicy",
+                    "secretsmanager:GetSecretValue",
+                    "dynamodb:PutItem",
+                    "secretsmanager:DescribeSecret",
+                    "sqs:SendMessage",
+                    "dynamodb:GetItem",
+                    "dynamodb:Scan",
+                    "dynamodb:UpdateItem",
+                    "dynamodb:UpdateTable",
+                    "secretsmanager:ListSecretVersionIds"
+                ],
+                "Resource": [
+                    "arn:aws:sqs:us-east-1:216608214837:shopify-wani-social",
+                    "arn:aws:dynamodb:us-east-1:216608214837:table/shopify-wani-products-main",
+                    "arn:aws:dynamodb:us-east-1:216608214837:table/shopify-wani-products-variants",
+                    "arn:aws:dynamodb:us-east-1:216608214837:table/shopify-wani-products-options",
+                    "arn:aws:dynamodb:us-east-1:216608214837:table/shopify-wani-products-images",
+                    "arn:aws:dynamodb:us-east-1:216608214837:table/shopify-wani-products-image",
+                    "arn:aws:secretsmanager:us-east-1:216608214837:secret:placid-JmBBUn"
+                ]
             }
-          ]
-        }
+        ]
+      }
     )
 }
 
