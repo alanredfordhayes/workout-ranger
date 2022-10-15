@@ -61,7 +61,7 @@ def load_sup_db_variants(suplist, tablename):
         Item = {}
         for key in p:
             if key == 'product_id': value = p[key]; value = str(value); Item[key] = {'N' : value}
-        Item['Data'] = {'S' : suplist}
+        Item['Data'] = {'S' : str(suplist)}
         try: response = client.get_item(TableName=os.environ[tablename],Key={'product_id':{'S':p.id}})
         except: response = client.put_item(TableName=os.environ[tablename],Item=Item)
 
