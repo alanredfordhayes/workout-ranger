@@ -285,11 +285,6 @@ resource "aws_dynamodb_table" "db_5" {
     type = "N"
   }
 
-  attribute {
-    name = "product_id"
-    type = "N"
-  }
-
   tags = {
     Name        = local.aws_dynamodb_table_app_1_db_5
   }
