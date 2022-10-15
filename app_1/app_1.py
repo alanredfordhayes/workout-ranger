@@ -50,9 +50,9 @@ def load_sup_db(suplist, tablename):
     for p in suplist:
         Item = {}
         for key in p:
-            if key == 'id': value = p[key]; value = str(value); Item[key] = {'N' : value}
-            elif key == 'product_id': value = p[key]; value = str(value); Item[key] = {'N' : value}
-        try: response = client.get_item(TableName=os.environ[tablename],Key={'id':{'S':p.id}})
+            if key == 'product_id': value = p[key]; value = str(value); Item[key] = {'N' : value}
+        Item['Data'] = {'S' : str(suplist)}            
+        try: response = client.get_item(TableName=os.environ[tablename],Key={'product_id':{'S':p.id}})
         except: response = client.put_item(TableName=os.environ[tablename],Item=Item)
         
 def load_sup_db_variants(suplist, tablename):
