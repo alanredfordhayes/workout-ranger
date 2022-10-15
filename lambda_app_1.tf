@@ -203,7 +203,7 @@ resource "aws_dynamodb_table" "db_2" {
   hash_key       = local.aws_dynamodb_table_app_1_db_sup_hashkey
 
   attribute {
-    name = "id"
+    name = "product_id"
     type = "N"
   }
 
@@ -220,7 +220,7 @@ resource "aws_dynamodb_table" "db_3" {
   hash_key       = local.aws_dynamodb_table_app_1_db_sup_hashkey
 
   attribute {
-    name = "id"
+    name = "product_id"
     type = "N"
   }
 
@@ -237,7 +237,7 @@ resource "aws_dynamodb_table" "db_4" {
   hash_key       = local.aws_dynamodb_table_app_1_db_sup_hashkey
 
   attribute {
-    name = "id"
+    name = "product_id"
     type = "N"
   }
 
@@ -255,7 +255,7 @@ resource "aws_dynamodb_table" "db_5" {
 
 
   attribute {
-    name = "id"
+    name = "product_id"
     type = "N"
   }
 
