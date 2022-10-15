@@ -14,7 +14,7 @@ def scan_products_db():
 def send_messages_sqs(message, QueueName):
     sqs = boto3.resource('sqs')
     queue = sqs.get_queue_by_name(QueueName=QueueName)
-    response = queue.send_message(MessageBody=message)
+    response = queue.send_message(MessageBody=str(message))
 
 def create_social_media_post():
     client = boto3.client('dynamodb')

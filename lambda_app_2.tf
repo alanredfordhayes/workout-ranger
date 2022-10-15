@@ -5,7 +5,7 @@ locals {
   ##aws_lambda_function
   aws_lambda_function_app_2_function_name = "${local.app_2_name}"
   aws_lambda_function_app_2_description   = "${local.app_2_name}"
-  aws_lambda_function_app_2_timeout       = 3
+  aws_lambda_function_app_2_timeout       = 10
   ##aws_lambda_permission
   aws_lambda_permission_app_2_statement_id  = "AllowExecutionFromAPIGateway"
   aws_lambda_permission_app_2_action        = "lambda:InvokeFunction"
@@ -125,6 +125,7 @@ resource "aws_iam_policy" "app_2" {
                 "Sid": "VisualEditor1",
                 "Effect": "Allow",
                 "Action": [
+                    "sqs:GetQueueUrl",
                     "secretsmanager:GetResourcePolicy",
                     "secretsmanager:GetSecretValue",
                     "dynamodb:PutItem",
