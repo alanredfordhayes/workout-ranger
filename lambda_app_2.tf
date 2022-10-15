@@ -49,6 +49,7 @@ resource "aws_lambda_function" "app_2" {
       TableName3 = local.aws_dynamodb_table_app_1_db_3
       TableName4 = local.aws_dynamodb_table_app_1_db_4
       TableName5 = local.aws_dynamodb_table_app_1_db_5
+      QueueName  = aws_sqs_queue.app_2.name
     }
   }
 }
