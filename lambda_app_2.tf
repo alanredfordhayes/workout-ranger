@@ -22,6 +22,13 @@ locals {
   #Cloudwatch
   ##aws_cloudwatch_log
   aws_cloudwatch_log_app_2_group_name = "${local.app_2_name}"
+  #SQS
+  ##aws_sqs_queue
+  aws_sqs_queue_app_2_name                      = "${local.app_2_name}"
+  aws_sqs_queue_app_2_delay_seconds             = 90
+  aws_sqs_queue_app_2_max_message_size          = 2048
+  aws_sqs_queue_app_2_message_retention_seconds = 86400
+  aws_sqs_queue_app_2_receive_wait_time_seconds = 10
 }
 
 ##LAMBDA
@@ -150,4 +157,12 @@ resource "aws_iam_policy_attachment" "app_2" {
 resource "aws_cloudwatch_log_group" "app_2" {
   name = local.aws_cloudwatch_log_app_2_group_name
   retention_in_days = 30
+}
+
+resource "aws_sqs_queue" "app_2" {
+  name                      = local.aws_sqs_queue_app_2_name
+  delay_seconds             = local.aws_sqs_queue_app_2_delay_seconds
+  max_message_size          = local.aws_sqs_queue_app_2_max_message_size
+  message_retention_seconds = local.aws_sqs_queue_app_2_message_retention_seconds
+  receive_wait_time_seconds = local.aws_sqs_queue_app_2_receive_wait_time_seconds
 }
