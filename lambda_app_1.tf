@@ -186,16 +186,10 @@ resource "aws_dynamodb_table" "db_1" {
   read_capacity  = 20
   write_capacity = 20
   hash_key       = local.aws_dynamodb_table_app_1_db_main_hashkey
-  range_key      = local.aws_dynamodb_table_app_1_db_main_range_key
 
   attribute {
     name = "id"
     type = "N"
-  }
-
-  attribute {
-    name = "title"
-    type = "S"
   }
 
   tags = {
@@ -209,15 +203,9 @@ resource "aws_dynamodb_table" "db_2" {
   read_capacity  = 20
   write_capacity = 20
   hash_key       = local.aws_dynamodb_table_app_1_db_sup_hashkey
-  range_key      = local.aws_dynamodb_table_app_1_db_sup_range_key
 
   attribute {
     name = "id"
-    type = "N"
-  }
-
-  attribute {
-    name = "product_id"
     type = "N"
   }
 
@@ -232,15 +220,9 @@ resource "aws_dynamodb_table" "db_3" {
   read_capacity  = 20
   write_capacity = 20
   hash_key       = local.aws_dynamodb_table_app_1_db_sup_hashkey
-  range_key      = local.aws_dynamodb_table_app_1_db_sup_range_key
 
   attribute {
     name = "id"
-    type = "N"
-  }
-
-  attribute {
-    name = "product_id"
     type = "N"
   }
 
@@ -255,15 +237,9 @@ resource "aws_dynamodb_table" "db_4" {
   read_capacity  = 20
   write_capacity = 20
   hash_key       = local.aws_dynamodb_table_app_1_db_sup_hashkey
-  range_key      = local.aws_dynamodb_table_app_1_db_sup_range_key
 
   attribute {
     name = "id"
-    type = "N"
-  }
-
-  attribute {
-    name = "product_id"
     type = "N"
   }
 
