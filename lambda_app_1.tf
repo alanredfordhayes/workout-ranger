@@ -47,9 +47,7 @@ locals {
   aws_dynamodb_table_app_1_db_4 = "${local.app_1_name}-images"
   aws_dynamodb_table_app_1_db_5 = "${local.app_1_name}-image"
   aws_dynamodb_table_app_1_db_main_hashkey = "id"
-  aws_dynamodb_table_app_1_db_main_range_key = "title"
-  aws_dynamodb_table_app_1_db_sup_hashkey = "id"
-  aws_dynamodb_table_app_1_db_sup_range_key = "product_id"
+  aws_dynamodb_table_app_1_db_sup_hashkey = "product_id"
 }
 
 ##LAMBDA
