@@ -21,13 +21,13 @@ def create_social_media_post():
     sm_post = {}
     num = 0
     for item in product_list_items: 
-        response = client.get_item(TableName=os.environ['TableName5'],Key={'id': {'N': 29529640075310 } } )
+        img_dict = client.get_item(TableName=os.environ['TableName5'],Key={'id': {'N': str(item['product_id']['N']) } } )
         num = num + 1
         sm_post[num] = {
             'number' : num,
             'title' : item['title']['S'],
             'id' : item['id']['N'],
-            'image' : response
+            'image' : img_dict['Item']['src']['S']
         }
     return sm_post
 
