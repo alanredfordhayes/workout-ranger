@@ -27,7 +27,7 @@ def get_secret():
 def processing_messages():
     text_secret_data = get_secret()
     instagram_page_id = text_secret_data['page_id']
-    instagram_access_token = text_secret_data['page_id']
+    instagram_access_token = text_secret_data['access_token']
     url = 'https://graph.facebook.com/v15.0/' + instagram_page_id + '?fields=instagram_business_account&access_token=' + instagram_access_token
     r = http.request('GET', url)
     print(r.data)
