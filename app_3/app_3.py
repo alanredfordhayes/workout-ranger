@@ -9,7 +9,7 @@ import os
 
 http = urllib3.PoolManager()
 
-def get_secret():
+def get_secret(secret_name):
     secret_name = secret_name
     region_name = "us-east-1"
     session = boto3.session.Session()
