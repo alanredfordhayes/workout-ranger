@@ -86,7 +86,7 @@ def create_image (title, img, template):
     return(r.data.decode('utf-8'))
 
 def processing_messages():
-    item_range = range(2)
+    item_range = range(1)
     image_urls = []
     messages = []
     for item in item_range:
@@ -98,9 +98,11 @@ def processing_messages():
         title = Body['title']
         img = Body['image']
         template = '1fcgfm1ks'
+        variants = Body['variants'].split(", ")
         placid_create_image = json.loads(create_image(title, img, template))
-        image_url = placid_create_image['image_url']
-        image_urls.append(image_url)
+        placid_image_url = placid_create_image['image_url']
+        image_urls.append(placid_image_url)
+        image_urls.extend(variants)
     
     #instagram 
     text_secret_data = get_secret("workout_ranger_instagram")
