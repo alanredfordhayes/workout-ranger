@@ -79,7 +79,7 @@ def processing_messages():
         {
             'media_type' : 'CAROUSEL',
             'children' : creation_ids,
-            'caption' : "Worout Ranger",
+            'caption' : "Workout Ranger",
             'access_token' : instagram_access_token,
         }
     )
