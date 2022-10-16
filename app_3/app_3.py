@@ -90,9 +90,9 @@ def processing_messages():
         title = Body['title']
         img = Body['image']
         template = '1fcgfm1ks'
-        image_url = create_image(title, img, template)
-        
-    
+        placid_create_image = create_image(title, img, template)
+        image_url = placid_create_image['image_url'].replace("/", '')
+        print(image_url)
     
     #instagram 
     text_secret_data = get_secret("workout_ranger_instagram")
