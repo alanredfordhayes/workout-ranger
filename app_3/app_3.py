@@ -78,7 +78,7 @@ def processing_messages():
     encoded_args = urlencode(
         {
             'media_type' : 'CAROUSEL',
-            'creation_id' : creation_ids,
+            'children' : creation_ids,
             'access_token' : instagram_access_token
         }
     )
