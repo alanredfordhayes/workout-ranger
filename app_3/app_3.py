@@ -25,12 +25,7 @@ def get_secret():
         else: decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary']); return decoded_binary_secret
 
 def processing_messages():
-    text_secret_data = get_secret()
-    instagram_page_id = text_secret_data['page_id']
-    instagram_access_token = text_secret_data['access_token']
-    url = 'https://graph.facebook.com/v15.0/' + instagram_page_id + '?fields=instagram_business_account&access_token=' + instagram_access_token
-    r = http.request('GET', url)
-    print(r.data)
+    #sqs
     QueueName = os.environ['QueueName']
     client = boto3.client('sqs')
     response = client.get_queue_url(QueueName=QueueName)
@@ -39,7 +34,17 @@ def processing_messages():
     Body = json.loads(response['Messages'][0]['Body'].replace("'", '"'))
     title = Body['title']
     print(title)
-    
+
+    #instagram 
+    text_secret_data = get_secret()
+    instagram_page_id = text_secret_data['page_id']
+    instagram_access_token = text_secret_data['access_token']
+    url = 'https://graph.facebook.com/v15.0/' + instagram_page_id + '?fields=instagram_business_account&access_token=' + instagram_access_token
+    r = http.request('GET', url)
+    instagram_ids = json.loads(r.data.decode('utf-8'))
+    instagram_business_account_id = instagram_ids['instagram_business_account']['id']
+    print(instagram_business_account_id)
+
     return 
     
 
