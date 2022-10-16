@@ -38,7 +38,7 @@ def instagram_media_container(facebook_api, instagram_business_account_id, insta
     encoded_args = urlencode(
         {
             'image_url' : image_url,
-            'caption' : 'WorkoutRanger',
+            'is_carousel_item' : 'true',
             'access_token' : instagram_access_token
         }
     )
@@ -79,7 +79,8 @@ def processing_messages():
         {
             'media_type' : 'CAROUSEL',
             'children' : creation_ids,
-            'access_token' : instagram_access_token
+            'caption' : "Worout Ranger",
+            'access_token' : instagram_access_token,
         }
     )
     
