@@ -113,6 +113,7 @@ resource "aws_iam_policy" "app_3" {
                 "Action": [
                     "sqs:GetQueueUrl",
                     "secretsmanager:DescribeSecret",
+                    "sqs:ReceiveMessage",
                     "secretsmanager:ListSecretVersionIds"
                 ],
                 "Resource": [
