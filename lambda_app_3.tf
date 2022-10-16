@@ -103,7 +103,8 @@ resource "aws_iam_policy" "app_3" {
                 "Sid": "VisualEditor0",
                 "Effect": "Allow",
                 "Action": [
-                    "logs:CreateLogGroup"
+                    "logs:CreateLogGroup",
+                    "secretsmanager:ListSecrets"
                 ],
                 "Resource": "*"
             },
@@ -111,13 +112,18 @@ resource "aws_iam_policy" "app_3" {
                 "Sid": "VisualEditor1",
                 "Effect": "Allow",
                 "Action": [
+                    "secretsmanager:GetResourcePolicy",
+                    "secretsmanager:GetSecretValue",
                     "sqs:GetQueueUrl",
                     "secretsmanager:DescribeSecret",
                     "sqs:ReceiveMessage",
                     "secretsmanager:ListSecretVersionIds"
                 ],
                 "Resource": [
-                    "arn:aws:sqs:us-east-1:${var.AWS_ACCOUNT_NUMBER}:shopify-wani-social"
+                    "arn:aws:sqs:us-east-1:${var.AWS_ACCOUNT_NUMBER}:shopify-wani-social",
+                    "arn:aws:secretsmanager:us-east-1:${var.AWS_ACCOUNT_NUMBER}:secret:placid-JmBBUn",
+                    "arn:aws:secretsmanager:us-east-1:${var.AWS_ACCOUNT_NUMBER}:secret:workout_ranger_instagram"
+
                 ]
             }
         ]
