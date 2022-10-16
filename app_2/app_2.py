@@ -27,6 +27,8 @@ def create_social_media_post():
     num = 0
     for item in product_list_items: 
         img_dict = client.get_item(TableName=os.environ['TableName5'],Key={'product_id': {'N': str(item['id']['N']) } } )
+        variant_dict = client.get_item(TableName=os.environ['TableName4'],Key={'product_id': {'N': str(item['id']['N']) } } )
+        data = variant_dict['Data']['S']
         num = num + 1
         sm_post[num] = {
             'number' : num,
@@ -54,32 +56,6 @@ def get_secret():
         if 'SecretString' in get_secret_value_response: 
             text_secret_data = json.loads(get_secret_value_response['SecretString']); return text_secret_data
         else: decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary']); return decoded_binary_secret
-
-def create_image (image, cta, price, title, token):
-    http = urllib3.PoolManager()
-    encoded_body = json.dumps(
-        {
-            "create_now": True,
-            "layers": {
-                "img": {
-                    "image": image,
-                    "image_viewport": "1200x1200"
-                },
-                "cta": {
-                    "text": cta
-                },
-                "price": {
-                    "text": price
-                },
-                "title": {
-                    "text": title
-                }
-            }
-        }
-    )
-    bearer_token = 'Bearer ' + token
-    r = http.request('POST', 'https://api.placid.app/api/rest/b3y0kkhnt', headers={'Content-Type': 'application/json', 'Authorization': bearer_token }, body=encoded_body)
-    return(r.data)
 
 def lambda_handler(event, context):
     s = create_social_media_post()
