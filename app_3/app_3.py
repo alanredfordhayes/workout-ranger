@@ -71,8 +71,8 @@ def processing_messages():
     image_urls = [image_url_1, image_url_2]
     creation_ids = str()
     for image_url in image_urls:
-        instagram_media_container = instagram_media_container(facebook_api, instagram_business_account_id, instagram_access_token, image_url)
-        creation_ids = creation_ids + instagram_media_container + '%'
+        creation_id = instagram_media_container(facebook_api, instagram_business_account_id, instagram_access_token, image_url)
+        creation_ids = creation_ids + creation_id + '%'
     creation_ids = creation_ids.rstrip(creation_ids[-1])
     print(creation_ids)
     encoded_args = urlencode(
