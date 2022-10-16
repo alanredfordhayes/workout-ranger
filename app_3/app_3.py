@@ -38,10 +38,10 @@ def processing_messages():
 
     #instagram 
     text_secret_data = get_secret()
-    instagram_page_id = text_secret_data['page_id']
+    facebook_page_id = text_secret_data['page_id']
     instagram_access_token = text_secret_data['access_token']
     facebook_api = 'https://graph.facebook.com/v15.0/'
-    url = facebook_api + instagram_page_id + '?fields=instagram_business_account&access_token=' + instagram_access_token
+    url = facebook_api + facebook_page_id + '?fields=instagram_business_account&access_token=' + instagram_access_token
     r = http.request('GET', url)
     instagram_ids = json.loads(r.data.decode('utf-8'))
     instagram_business_account_id = instagram_ids['instagram_business_account']['id']
@@ -54,9 +54,10 @@ def processing_messages():
         }
     )
     
-    url = facebook_api + instagram_page_id + 'media?' + encoded_args
+    url = facebook_api + instagram_business_account_id + 'media?' + encoded_args
     r = http.request('POST', url )
-    instagram_ids = json.loads(r.data.decode('utf-8'))
+    container_id = json.loads(r.data.decode('utf-8'))
+    print(container_id)
     return 
     
 
