@@ -56,8 +56,17 @@ def processing_messages():
     
     url = facebook_api + instagram_business_account_id + '/media?' + encoded_args
     r = http.request('POST', url )
-    container_id = json.loads(r.data.decode('utf-8'))
-    print(container_id)
+    creation_id = json.loads(r.data.decode('utf-8'))
+    creation_id = creation_id['id']
+    encoded_args = urlencode(
+        {
+            'creation_id' : creation_id
+        }
+    )
+    url = facebook_api + instagram_business_account_id + '/media_publish?' + encoded_args
+    r = http.request('POST', url )
+    data = json.loads(r.data.decode('utf-8'))
+    print(data)
     return 
     
 
