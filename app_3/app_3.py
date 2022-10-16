@@ -62,7 +62,7 @@ def instagram_carousel_container(creation_ids, facebook_api, instagram_business_
 
 def instagram_media_publish(facebook_api, instagram_business_account_id, instagram_carousel_container_id, instagram_access_token):
     encoded_args = urlencode({'creation_id' : instagram_carousel_container_id, 'access_token' : instagram_access_token})
-    url = facebook_api + instagram_business_account_id + '/media?' + encoded_args
+    url = facebook_api + instagram_business_account_id + '/media_publish?' + encoded_args
     r = http.request('POST', url )
     data = json.loads(r.data.decode('utf-8'))
     data = data['id']
