@@ -1,6 +1,6 @@
 ##LOCALS
 locals {
-  app_3_name = "${var.name}-${random_string.random.result}-social"
+  app_3_name = "${var.name}-${random_string.random.result}-instagram"
   #LAMBDA
   ##aws_lambda_function
   aws_lambda_function_app_3_function_name = "${local.app_3_name}"
