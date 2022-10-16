@@ -83,7 +83,7 @@ def processing_messages():
         }
     )
     
-    url = facebook_api + instagram_business_account_id + '/media_publish?' + encoded_args
+    url = facebook_api + instagram_business_account_id + '/media?' + encoded_args
     r = http.request('POST', url )
     data = json.loads(r.data.decode('utf-8'))
     print(data)
