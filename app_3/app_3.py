@@ -1,4 +1,5 @@
 import json
+from re import template
 import urllib3
 from urllib.parse import urlencode
 import boto3
@@ -9,7 +10,7 @@ import os
 http = urllib3.PoolManager()
 
 def get_secret():
-    secret_name = "workout_ranger_instagram"
+    secret_name = secret_name
     region_name = "us-east-1"
     session = boto3.session.Session()
     client = session.client(service_name='secretsmanager', region_name=region_name)
@@ -59,19 +60,42 @@ def instagram_carousel_container(creation_ids, facebook_api, instagram_business_
     data = data['id']
     return data
 
-def processing_messages():
-    #sqs
+def get_sqs_message():
     QueueName = os.environ['QueueName']
     client = boto3.client('sqs')
     response = client.get_queue_url(QueueName=QueueName)
     QueueUrl = response['QueueUrl']
     response = client.receive_message(QueueUrl=QueueUrl, AttributeNames=['SentTimestamp'], MaxNumberOfMessages=1, MessageAttributeNames=['All'], VisibilityTimeout=0, WaitTimeSeconds=0)
-    Body = json.loads(response['Messages'][0]['Body'].replace("'", '"'))
-    title = Body['title']
-    print(title)
+    return response
 
+def create_image (title, img, template):
+    text_secret_data = get_secret("placid")
+    token = text_secret_data['placid_token']
+    encoded_body = json.dumps( { "create_now": True, "layers": { "title": { "text": title }, "img": { "image": img, "image_viewport": "1200x1200" } } } )
+    url = 'https://api.placid.app/api/rest/' + template
+    authorization = 'Bearer ' + token
+    r = http.request('POST', url , headers={'Content-Type': 'application/json', 'Authorization': authorization }, body=encoded_body)
+    return(r.data.decode('utf-8'))
+
+def processing_messages():
+    item_range = range(1)
+    
+    messages = []
+    for item in item_range:
+        response = get_sqs_message()
+        print(response)
+        messages.append(response)
+        
+        Body = json.loads(response['Messages'][0]['Body'].replace("'", '"'))
+        title = Body['title']
+        img = Body['src']
+        template = '1fcgfm1ks'
+        image_url = create_image(title, img, template)
+        
+    
+    
     #instagram 
-    text_secret_data = get_secret()
+    text_secret_data = get_secret("workout_ranger_instagram")
     facebook_page_id = text_secret_data['page_id']
     instagram_access_token = text_secret_data['access_token']
     instagram_business_account_id = get_instagram_business_account_id(facebook_page_id, instagram_access_token)
