@@ -60,6 +60,14 @@ def instagram_carousel_container(creation_ids, facebook_api, instagram_business_
     data = data['id']
     return data
 
+def instagram_media_publish(facebook_api, instagram_business_account_id, instagram_carousel_container_id, instagram_access_token):
+    encoded_args = urlencode({'creation_id' : instagram_carousel_container_id, 'access_token' : instagram_access_token})
+    url = facebook_api + instagram_business_account_id + '/media?' + encoded_args
+    r = http.request('POST', url )
+    data = json.loads(r.data.decode('utf-8'))
+    data = data['id']
+    return data
+
 def get_sqs_message():
     QueueName = os.environ['QueueName']
     client = boto3.client('sqs')
@@ -78,8 +86,8 @@ def create_image (title, img, template):
     return(r.data.decode('utf-8'))
 
 def processing_messages():
-    item_range = range(1)
-    
+    item_range = range(2)
+    image_urls = []
     messages = []
     for item in item_range:
         response = get_sqs_message()
@@ -90,26 +98,24 @@ def processing_messages():
         title = Body['title']
         img = Body['image']
         template = '1fcgfm1ks'
-        placid_create_image = create_image(title, img, template)
-        image_url = placid_create_image['image_url'].replace("/", '')
-        print(image_url)
+        placid_create_image = json.loads(create_image(title, img, template))
+        image_url = placid_create_image['image_url']
+        image_urls.append(image_url)
     
     #instagram 
     text_secret_data = get_secret("workout_ranger_instagram")
     facebook_page_id = text_secret_data['page_id']
     instagram_access_token = text_secret_data['access_token']
-    instagram_business_account_id = get_instagram_business_account_id(facebook_page_id, instagram_access_token)
     facebook_api = 'https://graph.facebook.com/v15.0/'
-    image_url_1= 'https://s3-placid.s3.eu-central-1.amazonaws.com/production/rest-images/b3y0kkhnt/rest-e1ab7132136b4e94d547d64334a7b429-ruglxtfd.jpg'
-    image_url_2 = 'https://s3-placid.s3.eu-central-1.amazonaws.com/production/rest-images/ysr4e4n8l/rest-8e3fca0d0b27038775977a8c92b053ea-esferi2w.jpg'
-    image_urls = [image_url_1, image_url_2]
+
+    instagram_business_account_id = get_instagram_business_account_id(facebook_page_id, instagram_access_token)
     creation_ids = []
     for image_url in image_urls:
         creation_id = instagram_media_container(facebook_api, instagram_business_account_id, instagram_access_token, image_url)
         creation_ids.append(creation_id)
     instagram_carousel_container_id = instagram_carousel_container(creation_ids, facebook_api, instagram_business_account_id, instagram_access_token)
-    return instagram_carousel_container_id
-    
+    instagram_media_id = instagram_media_publish(facebook_api, instagram_business_account_id, instagram_carousel_container_id, instagram_access_token)
+    return instagram_media_id
 
 def lambda_handler(event, context):
     output = processing_messages()
