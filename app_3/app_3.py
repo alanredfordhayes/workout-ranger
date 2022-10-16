@@ -24,6 +24,30 @@ def get_secret():
         if 'SecretString' in get_secret_value_response: 
             text_secret_data = json.loads(get_secret_value_response['SecretString']); return text_secret_data
         else: decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary']); return decoded_binary_secret
+        
+
+def get_instagram_business_account_id(facebook_page_id, instagram_access_token):
+    facebook_api = 'https://graph.facebook.com/v15.0/'
+    url = facebook_api + facebook_page_id + '?fields=instagram_business_account&access_token=' + instagram_access_token
+    r = http.request('GET', url)
+    instagram_ids = json.loads(r.data.decode('utf-8'))
+    instagram_business_account_id = instagram_ids['instagram_business_account']['id']
+    return instagram_business_account_id
+
+def instagram_media_container(facebook_api, instagram_business_account_id, instagram_access_token, image_url):
+    encoded_args = urlencode(
+        {
+            'image_url' : image_url,
+            'caption' : 'WorkoutRanger',
+            'access_token' : instagram_access_token
+        }
+    )
+    
+    url = facebook_api + instagram_business_account_id + '/media?' + encoded_args
+    r = http.request('POST', url )
+    creation_id = json.loads(r.data.decode('utf-8'))
+    creation_id = creation_id['id']
+    return creation_id
 
 def processing_messages():
     #sqs
@@ -40,29 +64,25 @@ def processing_messages():
     text_secret_data = get_secret()
     facebook_page_id = text_secret_data['page_id']
     instagram_access_token = text_secret_data['access_token']
+    instagram_business_account_id = get_instagram_business_account_id(facebook_page_id, instagram_access_token)
     facebook_api = 'https://graph.facebook.com/v15.0/'
-    url = facebook_api + facebook_page_id + '?fields=instagram_business_account&access_token=' + instagram_access_token
-    r = http.request('GET', url)
-    instagram_ids = json.loads(r.data.decode('utf-8'))
-    instagram_business_account_id = instagram_ids['instagram_business_account']['id']
-    print(instagram_business_account_id)
+    image_url_1= 'https://s3-placid.s3.eu-central-1.amazonaws.com/production/rest-images/b3y0kkhnt/rest-e1ab7132136b4e94d547d64334a7b429-ruglxtfd.jpg'
+    image_url_2 = 'https://s3-placid.s3.eu-central-1.amazonaws.com/production/rest-images/ysr4e4n8l/rest-8e3fca0d0b27038775977a8c92b053ea-esferi2w.jpg'
+    image_urls = [image_url_1, image_url_2]
+    creation_ids = str()
+    for image_url in image_urls:
+        instagram_media_container = instagram_media_container(facebook_api, instagram_business_account_id, instagram_access_token, image_url)
+        creation_ids = creation_ids + instagram_media_container + '%'
+    creation_ids = creation_ids.rstrip(creation_ids[-1])
+    print(creation_ids)
     encoded_args = urlencode(
         {
-            'image_url' : 'https://s3-placid.s3.eu-central-1.amazonaws.com/production/rest-images/b3y0kkhnt/rest-e1ab7132136b4e94d547d64334a7b429-ruglxtfd.jpg',
-            'caption' : 'WorkoutRanger',
+            'media_type' : 'CAROUSEL',
+            'creation_id' : creation_ids,
             'access_token' : instagram_access_token
         }
     )
     
-    url = facebook_api + instagram_business_account_id + '/media?' + encoded_args
-    r = http.request('POST', url )
-    creation_id = json.loads(r.data.decode('utf-8'))
-    creation_id = creation_id['id']
-    encoded_args = urlencode(
-        {
-            'creation_id' : creation_id
-        }
-    )
     url = facebook_api + instagram_business_account_id + '/media_publish?' + encoded_args
     r = http.request('POST', url )
     data = json.loads(r.data.decode('utf-8'))
