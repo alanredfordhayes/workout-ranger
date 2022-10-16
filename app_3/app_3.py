@@ -49,6 +49,16 @@ def instagram_media_container(facebook_api, instagram_business_account_id, insta
     creation_id = creation_id['id']
     return creation_id
 
+def instagram_carousel_container(creation_ids, facebook_api, instagram_business_account_id, instagram_access_token):
+    children = '%2C'.join(creation_ids)
+    encoded_args = urlencode({'caption' : "Workout Ranger", 'media_type' : 'CAROUSEL', 'access_token' : instagram_access_token})
+    encoded_args = 'children=' + children + '&' + encoded_args 
+    url = facebook_api + instagram_business_account_id + '/media?' + encoded_args
+    r = http.request('POST', url )
+    data = json.loads(r.data.decode('utf-8'))
+    data = data['id']
+    return data
+
 def processing_messages():
     #sqs
     QueueName = os.environ['QueueName']
@@ -69,26 +79,12 @@ def processing_messages():
     image_url_1= 'https://s3-placid.s3.eu-central-1.amazonaws.com/production/rest-images/b3y0kkhnt/rest-e1ab7132136b4e94d547d64334a7b429-ruglxtfd.jpg'
     image_url_2 = 'https://s3-placid.s3.eu-central-1.amazonaws.com/production/rest-images/ysr4e4n8l/rest-8e3fca0d0b27038775977a8c92b053ea-esferi2w.jpg'
     image_urls = [image_url_1, image_url_2]
-    creation_ids = str()
+    creation_ids = []
     for image_url in image_urls:
         creation_id = instagram_media_container(facebook_api, instagram_business_account_id, instagram_access_token, image_url)
-        creation_ids = creation_ids + creation_id + '%'
-    creation_ids = creation_ids.rstrip(creation_ids[-1])
-    print(creation_ids)
-    encoded_args = urlencode(
-        {
-            'caption' : "Workout Ranger",
-            'media_type' : 'CAROUSEL',
-            'children' : creation_ids,
-            'access_token' : instagram_access_token,
-        }
-    )
-    
-    url = facebook_api + instagram_business_account_id + '/media?' + encoded_args
-    r = http.request('POST', url )
-    data = json.loads(r.data.decode('utf-8'))
-    print(data)
-    return 
+        creation_ids.append(creation_id)
+    instagram_carousel_container_id = instagram_carousel_container(creation_ids, facebook_api, instagram_business_account_id, instagram_access_token)
+    return instagram_carousel_container_id
     
 
 def lambda_handler(event, context):
