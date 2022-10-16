@@ -77,9 +77,9 @@ def processing_messages():
     print(creation_ids)
     encoded_args = urlencode(
         {
+            'caption' : "Workout Ranger",
             'media_type' : 'CAROUSEL',
             'children' : creation_ids,
-            'caption' : "Workout Ranger",
             'access_token' : instagram_access_token,
         }
     )
