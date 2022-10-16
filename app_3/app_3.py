@@ -88,7 +88,7 @@ def processing_messages():
         
         Body = json.loads(response['Messages'][0]['Body'].replace("'", '"'))
         title = Body['title']
-        img = Body['src']
+        img = Body['image']
         template = '1fcgfm1ks'
         image_url = create_image(title, img, template)
         
