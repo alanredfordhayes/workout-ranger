@@ -138,13 +138,13 @@ resource "aws_iam_policy" "app_2" {
                     "secretsmanager:ListSecretVersionIds"
                 ],
                 "Resource": [
-                    "arn:aws:sqs:us-east-1:216608214837:shopify-wani-social",
-                    "arn:aws:dynamodb:us-east-1:216608214837:table/shopify-wani-products-main",
-                    "arn:aws:dynamodb:us-east-1:216608214837:table/shopify-wani-products-variants",
-                    "arn:aws:dynamodb:us-east-1:216608214837:table/shopify-wani-products-options",
-                    "arn:aws:dynamodb:us-east-1:216608214837:table/shopify-wani-products-images",
-                    "arn:aws:dynamodb:us-east-1:216608214837:table/shopify-wani-products-image",
-                    "arn:aws:secretsmanager:us-east-1:216608214837:secret:placid-JmBBUn"
+                    "arn:aws:sqs:us-east-1:${var.AWS_ACCOUNT_NUMBER}:shopify-wani-social",
+                    "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/shopify-wani-products-main",
+                    "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/shopify-wani-products-variants",
+                    "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/shopify-wani-products-options",
+                    "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/shopify-wani-products-images",
+                    "arn:aws:dynamodb:us-east-1:${var.AWS_ACCOUNT_NUMBER}:table/shopify-wani-products-image",
+                    "arn:aws:secretsmanager:us-east-1:${var.AWS_ACCOUNT_NUMBER}:secret:placid-JmBBUn"
                 ]
             }
         ]
