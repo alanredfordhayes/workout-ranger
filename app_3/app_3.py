@@ -29,7 +29,7 @@ def get_secret(secret_name):
         
 def generateSocialMediaPost(prompt1):
     text_secret_data = get_secret("openai")
-    openai.api_key = text_secret_data['text_secret_data']
+    openai.api_key = text_secret_data['secret_key']
     response = openai.Completion.create(
       engine="davinci-instruct-beta-v3",
       prompt="Generate a funny social media post about how exercise relates to: {}.".format(prompt1),
