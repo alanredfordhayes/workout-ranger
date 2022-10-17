@@ -5,7 +5,7 @@ locals {
   ##aws_lambda_function
   aws_lambda_function_app_3_function_name = "${local.app_3_name}"
   aws_lambda_function_app_3_description   = "${local.app_3_name}"
-  aws_lambda_function_app_3_timeout       = 50
+  aws_lambda_function_app_3_timeout       = 60
   ##aws_lambda_permission
   aws_lambda_permission_app_3_statement_id  = "AllowExecutionFromAPIGateway"
   aws_lambda_permission_app_3_action        = "lambda:InvokeFunction"
