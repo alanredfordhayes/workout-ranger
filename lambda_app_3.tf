@@ -36,6 +36,7 @@ resource "aws_lambda_function" "app_3" {
   s3_key            = aws_s3_object.app_3.key
   source_code_hash  = data.archive_file.app_3.output_base64sha256
   role              = aws_iam_role.app_3.arn
+  layers            = ["arn:aws:lambda:us-east-1:${var.AWS_ACCOUNT_NUMBER}:layer:openai:2"]
   environment {
     variables = {
       QueueName  = aws_sqs_queue.app_2.name
