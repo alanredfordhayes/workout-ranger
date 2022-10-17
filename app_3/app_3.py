@@ -44,7 +44,7 @@ def generateSocialMediaPost(prompt1):
 
 def generateHastags(prompt1):
     text_secret_data = get_secret("openai")
-    openai.api_key = text_secret_data['text_secret_data']
+    openai.api_key = text_secret_data['secret_key']
     response = openai.Completion.create(
       engine="davinci-instruct-beta-v3",
       prompt="Generate hashtags for this social media post: {}".format(prompt1),
