@@ -6,6 +6,7 @@ import boto3
 import base64
 from botocore.exceptions import ClientError
 import os
+import openai
 
 http = urllib3.PoolManager()
 
@@ -26,6 +27,35 @@ def get_secret(secret_name):
             text_secret_data = json.loads(get_secret_value_response['SecretString']); return text_secret_data
         else: decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary']); return decoded_binary_secret
         
+def generateSocialMediaPost(prompt1):
+    text_secret_data = get_secret("openai")
+    openai.api_key = text_secret_data['text_secret_data']
+    response = openai.Completion.create(
+      engine="davinci-instruct-beta-v3",
+      prompt="Generate a funny social media post about how exercise relates to: {}.".format(prompt1),
+      temperature=0.7,
+      max_tokens=100,
+      top_p=1,
+      frequency_penalty=0,
+      presence_penalty=0
+    )
+
+    return response['choices'][0]['text']
+
+def generateHastags(prompt1):
+    text_secret_data = get_secret("openai")
+    openai.api_key = text_secret_data['text_secret_data']
+    response = openai.Completion.create(
+      engine="davinci-instruct-beta-v3",
+      prompt="Generate hashtags for this social media post: {}".format(prompt1),
+      temperature=0.6,
+      max_tokens=100,
+      top_p=1,
+      frequency_penalty=0,
+      presence_penalty=0
+    )
+
+    return response['choices'][0]['text']
 
 def get_instagram_business_account_id(facebook_page_id, instagram_access_token):
     facebook_api = 'https://graph.facebook.com/v15.0/'
@@ -50,9 +80,11 @@ def instagram_media_container(facebook_api, instagram_business_account_id, insta
     creation_id = creation_id['id']
     return creation_id
 
-def instagram_carousel_container(creation_ids, facebook_api, instagram_business_account_id, instagram_access_token):
+def instagram_carousel_container(creation_ids, facebook_api, instagram_business_account_id, instagram_access_token, title):
     children = '%2C'.join(creation_ids)
-    encoded_args = urlencode({'caption' : "Workout Ranger", 'media_type' : 'CAROUSEL', 'access_token' : instagram_access_token})
+    caption = generateSocialMediaPost(title)
+    caption = caption + generateHastags(caption)
+    encoded_args = urlencode({'caption' : caption, 'media_type' : 'CAROUSEL', 'access_token' : instagram_access_token})
     encoded_args = 'children=' + children + '&' + encoded_args 
     url = facebook_api + instagram_business_account_id + '/media?' + encoded_args
     r = http.request('POST', url )
@@ -115,7 +147,7 @@ def processing_messages():
     for image_url in image_urls:
         creation_id = instagram_media_container(facebook_api, instagram_business_account_id, instagram_access_token, image_url)
         creation_ids.append(creation_id)
-    instagram_carousel_container_id = instagram_carousel_container(creation_ids, facebook_api, instagram_business_account_id, instagram_access_token)
+    instagram_carousel_container_id = instagram_carousel_container(creation_ids, facebook_api, instagram_business_account_id, instagram_access_token, title)
     instagram_media_id = instagram_media_publish(facebook_api, instagram_business_account_id, instagram_carousel_container_id, instagram_access_token)
     return instagram_media_id
 
