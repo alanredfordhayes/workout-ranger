@@ -31,7 +31,7 @@ def retrieve_a_list_of_all_blogs():
     text_secret_data = get_secret()
     workoutranger_shopify_admin_api_access_token = text_secret_data['workoutranger_shopify_admin_api_access_token']
     store_name = text_secret_data['store_name']
-    api_resource = 'products'
+    api_resource = 'blogs'
     url = 'https://' + store_name + '.myshopify.com/admin/api/2022-07/' + api_resource + '.json'
     r = http.request('GET', 
                      url,
