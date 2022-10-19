@@ -1,16 +1,3 @@
-##Random
-resource "random_string" "random" {
-  length           = 4
-  special          = false
-  min_lower        = 4
-}
-
-##Vars
-variable "AWS_ACCOUNT_NUMBER" {}
-variable "name"{
-  default = "shopify"
-} 
-
 ##LOCALS
 locals {
   app_4_name = "${var.name}-${random_string.random.result}-blogs"
