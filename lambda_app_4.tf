@@ -9,7 +9,7 @@ locals {
   ##aws_lambda_permission
   aws_lambda_permission_app_4_statement_id  = "AllowExecutionFromAPIGateway"
   aws_lambda_permission_app_4_action        = "lambda:InvokeFunction"
-  aws_lambda_permission_app1_principal      = "apigateway.amazonaws.com"
+  aws_lambda_permission_app_4_principal      = "apigateway.amazonaws.com"
   #IAM
   ##aws_iam_role
   aws_iam_role_app_4_name = "${local.app_4_name}"
@@ -17,7 +17,7 @@ locals {
   aws_iam_role_policy_attachment_app_4_policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
   ##aws_iam_policy
   aws_iam_policy_app_4_name = "${local.app_4_name}"
-  aws_iam_policy_app1_path  = "/"
+  aws_iam_policy_app_4_path  = "/"
   aws_iam_policy_app_4_description = "${local.app_4_name}"
   #Cloudwatch
   ##aws_cloudwatch_log
@@ -41,7 +41,7 @@ resource "aws_lambda_permission" "app_4" {
   statement_id  = local.aws_lambda_permission_app_4_statement_id
   action        = local.aws_lambda_permission_app_4_action
   function_name = aws_lambda_function.app_4.function_name
-  principal     = local.aws_lambda_permission_app1_principal
+  principal     = local.aws_lambda_permission_app_4_principal
 }
 
 ##S3
@@ -88,7 +88,7 @@ resource "aws_iam_role_policy_attachment" "app_4" {
 
 resource "aws_iam_policy" "app_4" {
     name = local.aws_iam_policy_app_4_name
-    path = local.aws_iam_policy_app1_path
+    path = local.aws_iam_policy_app_4_path
     description = local.aws_iam_policy_app_4_description
     policy = jsonencode(
         {
