@@ -2,16 +2,18 @@ from cgitb import text
 from email import header
 import json
 import urllib3
+from urllib.parse import urlencode
 import resource
 import boto3
 import base64
 import os
+import openai
 from botocore.exceptions import ClientError
 
 http = urllib3.PoolManager()
 
-def get_secret():
-    secret_name = "workoutranger_shopify_admin_api_access_token"
+def get_secret(secret_name):
+    secret_name = secret_name
     region_name = "us-east-1"
     session = boto3.session.Session()
     client = session.client(service_name='secretsmanager', region_name=region_name)
@@ -28,7 +30,7 @@ def get_secret():
         else: decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary']); return decoded_binary_secret
 
 def retrieve_a_list_of_all_blogs():
-    text_secret_data = get_secret()
+    text_secret_data = get_secret("workoutranger_shopify_admin_api_access_token")
     workoutranger_shopify_admin_api_access_token = text_secret_data['workoutranger_shopify_admin_api_access_token']
     store_name = text_secret_data['store_name']
     api_resource = 'blogs'
@@ -46,7 +48,7 @@ def retrieve_a_list_of_all_blogs():
 
 def retrieves_a_list_of_all_articles_from_a_blog(blog_id):
     'curl -X GET "https://your-development-store.myshopify.com/admin/api/2022-10/blogs/241253187/articles.json?since_id=134645308" -H "X-Shopify-Access-Token: {access_token}"'
-    text_secret_data = get_secret()
+    text_secret_data = get_secret("workoutranger_shopify_admin_api_access_token")
     workoutranger_shopify_admin_api_access_token = text_secret_data['workoutranger_shopify_admin_api_access_token']
     store_name = text_secret_data['store_name']
     api_resource = 'blogs/'
@@ -76,7 +78,7 @@ def generateSocialMediaPost(prompt1):
     openai.api_key = text_secret_data['secret_key']
     response = openai.Completion.create(
       engine="davinci-instruct-beta-v3",
-      prompt="Generate a funny social media post about how exercise relates to: {}.".format(prompt1),
+      prompt="Generate a social media to promote this blog: {}.".format(prompt1),
       temperature=0.7,
       max_tokens=100,
       top_p=1,
@@ -95,6 +97,7 @@ def get_instagram_business_account_id(facebook_page_id, instagram_access_token):
     return instagram_business_account_id
     
 def instagram_media_container(facebook_api, instagram_business_account_id, instagram_access_token, image_url, caption):
+    print(caption)
     encoded_args = urlencode(
         {
             'image_url' : image_url,
@@ -106,6 +109,7 @@ def instagram_media_container(facebook_api, instagram_business_account_id, insta
     url = facebook_api + instagram_business_account_id + '/media?' + encoded_args
     r = http.request('POST', url )
     creation_id = json.loads(r.data.decode('utf-8'))
+    print(creation_id)
     creation_id = creation_id['id']
     return creation_id
 
@@ -162,14 +166,22 @@ def main():
                 post_date = article_published_at
                 post_article_title = article_title
                 post_article_url = url
+                article_tags = '#' + article_tags.replace(', ',', #')
+                article_tags = article_tags.replace(' ','')
+                article_tags = article_tags.replace(',',', ')
                 post_article_tags = article_tags
                 
     placid_create_image = json.loads(create_image (post_article_title, post_article_url, template))
-    caption = generateSocialMediaPost(post_article_title)
-    caption = caption + "\n" + post_article_tags + "\n www.workoutranger.com"
+    prompt1 = post_article_title + ' ' + post_article_tags
+    caption = generateSocialMediaPost(prompt1)
+    caption = caption + "\n\n" + post_article_tags + "\n\nworkoutranger.com" + "\n" + post_article_url
     placid_image_url = placid_create_image['image_url']
+    text_secret_data = get_secret("workout_ranger_instagram")
+    facebook_page_id = text_secret_data['page_id']
+    instagram_access_token = text_secret_data['access_token']
+    facebook_api = 'https://graph.facebook.com/v15.0/'
     instagram_business_account_id = get_instagram_business_account_id(facebook_page_id, instagram_access_token)
-    creation_id = instagram_media_container(facebook_api, instagram_business_account_id, instagram_access_token, image_url, caption)
+    creation_id = instagram_media_container(facebook_api, instagram_business_account_id, instagram_access_token, placid_image_url, caption)
     instagram_media_id = instagram_media_publish(facebook_api, instagram_business_account_id, creation_id, instagram_access_token)
     return instagram_media_id
 

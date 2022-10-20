@@ -35,6 +35,7 @@ resource "aws_lambda_function" "app_4" {
   s3_key            = aws_s3_object.app_4.key
   source_code_hash  = data.archive_file.app_4.output_base64sha256
   role              = aws_iam_role.app_4.arn
+  layers            = ["arn:aws:lambda:us-east-1:${var.AWS_ACCOUNT_NUMBER}:layer:openai:2"]
 }
 
 resource "aws_lambda_permission" "app_4" {
