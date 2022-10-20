@@ -114,7 +114,10 @@ resource "aws_iam_policy" "app_4" {
                   "secretsmanager:ListSecretVersionIds"
               ],
               "Resource": [
-                  "arn:aws:secretsmanager:us-east-1:${var.AWS_ACCOUNT_NUMBER}:secret:workoutranger_shopify_admin_api_access_token-6vDz4g"
+                  "arn:aws:secretsmanager:us-east-1:${var.AWS_ACCOUNT_NUMBER}:secret:workoutranger_shopify_admin_api_access_token-6vDz4g",
+                  "arn:aws:secretsmanager:us-east-1:${var.AWS_ACCOUNT_NUMBER}:secret:placid-JmBBUn",
+                  "arn:aws:secretsmanager:us-east-1:${var.AWS_ACCOUNT_NUMBER}:secret:workout_ranger_instagram-S594Xg",
+                  "arn:aws:secretsmanager:us-east-1:${var.AWS_ACCOUNT_NUMBER}:secret:openai-lbgVrI"
               ]
             }
           ]
