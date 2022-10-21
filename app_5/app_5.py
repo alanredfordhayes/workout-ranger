@@ -31,7 +31,7 @@ def get_secret(secret_name):
         else: decoded_binary_secret = base64.b64decode(get_secret_value_response['SecretBinary']); return decoded_binary_secret
 
 def get_access_token():
-    text_secret_data = get_secret("text_secret_data")
+    text_secret_data = get_secret("workout_ranger_spotify_shopify")
     client_id = text_secret_data['client_id']
     client_secret = text_secret_data['client_secret']
     b64Val = base64.b64encode((client_id + ":" + client_secret).encode("ascii")).decode()
