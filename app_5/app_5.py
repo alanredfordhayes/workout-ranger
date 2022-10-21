@@ -178,9 +178,8 @@ def instagram_carousel_container(facebook_api, instagram_business_account_id, in
     for key in sorted_song_to_post_keys:
         count = count + 1
         placid_images[count] = sorted_songs_to_post[key]['track_images']
-        art = sorted_song_to_post_keys[key]['track_artists']
-        artists.append(art)
-        caption_track = sorted_song_to_post_keys[key]['track_name'] + ' by ' + sorted_song_to_post_keys[key]['track_artists'] + ', Listen Here: ' + sorted_song_to_post_keys[key]['track_external_urls']
+        artists.append(sorted_songs_to_post[key]['track_artists'])
+        caption_track = sorted_songs_to_post[key]['track_name'] + ' by ' + sorted_songs_to_post[key]['track_artists'] + ', Listen Here: ' + sorted_songs_to_post[key]['track_external_urls']
         caption_tracks.append(caption_track)
     img_1 = placid_images[1]
     img_2 = placid_images[2]
