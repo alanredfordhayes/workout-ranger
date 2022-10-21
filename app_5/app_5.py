@@ -167,7 +167,7 @@ def instagram_media_container(facebook_api, instagram_business_account_id, insta
     creation_id = creation_id['id']
     return creation_id
 
-def instagram_carousel_container(creation_ids, facebook_api, instagram_business_account_id, instagram_access_token, songs_to_post):
+def instagram_carousel_container(facebook_api, instagram_business_account_id, instagram_access_token, songs_to_post):
     sorted_songs_to_post = OrderedDict(sorted(songs_to_post.items(), reverse=True))
     sorted_song_to_post_keys = sorted_songs_to_post.keys()
     image_urls = []
@@ -189,6 +189,10 @@ def instagram_carousel_container(creation_ids, facebook_api, instagram_business_
     title = ', '.join(artists)
     placid_image_url = placid_create_image['image_url']
     image_urls.insert(0, placid_image_url)
+    creation_ids = []
+    for image_url in image_urls:
+        creation_id = instagram_media_container(facebook_api, instagram_business_account_id, instagram_access_token, image_url)
+        creation_ids.append(creation_id)
     children = '%2C'.join(creation_ids)
     caption_track = '\n'.join(caption_track)
     caption = generateSocialMediaPost(title)
@@ -254,11 +258,7 @@ def main():
     instagram_access_token = text_secret_data['access_token']
     facebook_api = 'https://graph.facebook.com/v15.0/'
     instagram_business_account_id = get_instagram_business_account_id(facebook_page_id, instagram_access_token)
-    creation_ids = []
-    for image_url in image_urls:
-        creation_id = instagram_media_container(facebook_api, instagram_business_account_id, instagram_access_token, image_url)
-        creation_ids.append(creation_id)
-    instagram_carousel_container_id = instagram_carousel_container(creation_ids, facebook_api, instagram_business_account_id, instagram_access_token, songs_to_post)
+    instagram_carousel_container_id = instagram_carousel_container(facebook_api, instagram_business_account_id, instagram_access_token, songs_to_post)
     instagram_media_id = instagram_media_publish(facebook_api, instagram_business_account_id, instagram_carousel_container_id, instagram_access_token)
     return instagram_media_id
     
