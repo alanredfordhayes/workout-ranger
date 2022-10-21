@@ -48,12 +48,15 @@ def shopify_get(access_token, url):
     headers = {'Authorization' : Authorization, 'Content-Type' : 'application/json'}
     response = requests.get(url=url, headers=headers).json()
     time.sleep(0.1)
-    return response['albums']["items"]
+    return response
 
 def get_new_releases(access_token):
     url = 'https://api.spotify.com/v1/browse/new-releases'
-    response = shopify_get(access_token, url)
-    return response
+    Authorization = 'Bearer ' + access_token
+    headers = {'Authorization' : Authorization, 'Content-Type' : 'application/json'}
+    response = requests.get(url=url, headers=headers).json()
+    time.sleep(0.1)
+    return response['albums']["items"]
 
 def get_album(id, access_token):
     url = 'https://api.spotify.com/v1/albums/' + id
