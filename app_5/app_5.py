@@ -218,12 +218,18 @@ def main():
     viral_50_usa = '37i9dQZEVXbKuaTI1Z1Afx'
     viral_50_global = '37i9dQZEVXbLiRSasKsNU9'
     new_music_friday = '37i9dQZF1DX4JAvHpjipBk'
-    songs_to_workout.extend(songs_from_new_releases(access_token=access_token))
-    songs_to_workout.extend(songs_from_playlist(access_token=access_token, id=top_songs_usa))
-    songs_to_workout.extend(songs_from_playlist(access_token=access_token, id=top_songs_global))
-    songs_to_workout.extend(songs_from_playlist(access_token=access_token, id=viral_50_usa))
-    songs_to_workout.extend(songs_from_playlist(access_token=access_token, id=viral_50_global))
-    songs_to_workout.extend(songs_from_playlist(access_token=access_token, id=new_music_friday))
+    try: songs_to_workout.extend(songs_from_new_releases(access_token=access_token))
+    except: pass
+    try: songs_to_workout.extend(songs_from_playlist(access_token=access_token, id=top_songs_usa))
+    except: pass
+    try: songs_to_workout.extend(songs_from_playlist(access_token=access_token, id=top_songs_global))
+    except: pass
+    try: songs_to_workout.extend(songs_from_playlist(access_token=access_token, id=viral_50_usa))
+    except: pass
+    try: songs_to_workout.extend(songs_from_playlist(access_token=access_token, id=viral_50_global))
+    except: pass
+    try: songs_to_workout.extend(songs_from_playlist(access_token=access_token, id=new_music_friday))
+    except: pass
     songs_to_workout= [*set(songs_to_workout)]
     songs_to_post = {}
     for song in songs_to_workout:
