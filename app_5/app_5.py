@@ -179,7 +179,7 @@ def instagram_carousel_container(facebook_api, instagram_business_account_id, in
         count = count + 1
         print(key)
         placid_images[count] = sorted_songs_to_post[key]['track_images']
-        artists.append(sorted_songs_to_post[key]['track_artists'])
+        artists.append(sorted_songs_to_post[key]['track_artist'])
         caption_track = sorted_songs_to_post[key]['track_name'] + ' by ' + sorted_songs_to_post[key]['track_artists'] + ', Listen Here: ' + sorted_songs_to_post[key]['track_external_urls']
         caption_tracks.append(caption_track)
     img_1 = placid_images[1]
