@@ -187,7 +187,7 @@ def instagram_carousel_container(facebook_api, instagram_business_account_id, in
     img_3 = placid_images[3]
     img_4 = placid_images[4]
     template = 'tuebewt1a'
-    placid_create_image = create_image (img_1, img_2, img_3, img_4, template)
+    placid_create_image = json.loads(create_image (img_1, img_2, img_3, img_4, template))
     title = ', '.join(artists)
     placid_image_url = placid_create_image['image_url']
     image_urls.insert(0, placid_image_url)
