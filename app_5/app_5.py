@@ -182,7 +182,7 @@ def instagram_carousel_container(facebook_api, instagram_business_account_id, in
         if count < 9:
             image_urls.append(sorted_songs_to_post[key]['track_images'])
         artists.append(sorted_songs_to_post[key]['track_artist'])
-        caption_track = sorted_songs_to_post[key]['track_name'] + ' by ' + sorted_songs_to_post[key]['track_artist'] + ', Listen Here: ' + sorted_songs_to_post[key]['track_external_urls']
+        caption_track = sorted_songs_to_post[key]['track_name'] + ' by ' + sorted_songs_to_post[key]['track_artist'] + ', Listen Here: \n' + sorted_songs_to_post[key]['track_external_urls']
         caption_tracks.append(caption_track)
     img_1 = placid_images[1]
     img_2 = placid_images[2]
@@ -198,7 +198,7 @@ def instagram_carousel_container(facebook_api, instagram_business_account_id, in
         creation_id = instagram_media_container(facebook_api, instagram_business_account_id, instagram_access_token, image_url)
         creation_ids.append(creation_id)
     children = '%2C'.join(creation_ids)
-    caption_track = '\n'.join(caption_track)
+    caption_track = '\n'.join(caption_tracks)
     caption = generateSocialMediaPost(title)
     caption = caption + generateHastags(caption)
     caption = caption +  "\n\n" + caption_track + "\n\nhttps://wwww.workoutranger.com" + "\nRanger Radio: https://open.spotify.com/playlist/5YAAetoRA0Z2ty3OkGspxM" 
