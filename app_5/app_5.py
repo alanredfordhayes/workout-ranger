@@ -201,7 +201,8 @@ def instagram_carousel_container(facebook_api, instagram_business_account_id, in
     caption_track = '\n'.join(caption_tracks)
     caption = generateSocialMediaPost(title)
     caption = caption + generateHastags(caption)
-    caption = caption +  "\n\n" + caption_track + "\n\nhttps://wwww.workoutranger.com" + "\nRanger Radio: https://open.spotify.com/playlist/5YAAetoRA0Z2ty3OkGspxM" 
+    caption = caption +  "\n\n" + caption_track + "\n\nhttps://wwww.workoutranger.com" + "\nRanger Radio: https://open.spotify.com/playlist/5YAAetoRA0Z2ty3OkGspxM"
+    print(caption) 
     encoded_args = urlencode({'caption' : caption, 'media_type' : 'CAROUSEL', 'access_token' : instagram_access_token})
     encoded_args = 'children=' + children + '&' + encoded_args 
     url = facebook_api + instagram_business_account_id + '/media?' + encoded_args
