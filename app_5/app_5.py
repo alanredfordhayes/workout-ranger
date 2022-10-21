@@ -167,11 +167,33 @@ def instagram_media_container(facebook_api, instagram_business_account_id, insta
     creation_id = creation_id['id']
     return creation_id
 
-def instagram_carousel_container(creation_ids, facebook_api, instagram_business_account_id, instagram_access_token, title):
+def instagram_carousel_container(creation_ids, facebook_api, instagram_business_account_id, instagram_access_token, songs_to_post):
+    sorted_songs_to_post = OrderedDict(sorted(songs_to_post.items(), reverse=True))
+    sorted_song_to_post_keys = sorted_songs_to_post.keys()
+    image_urls = []
+    placid_images = {}
+    artists = []
+    caption_tracks = []
+    for key in sorted_song_to_post_keys:
+        count = count + 1
+        placid_images[count] = sorted_songs_to_post[key]['track_images']
+        artists.append(sorted_song_to_post_keys[key]['track_artists'])
+        caption_track = sorted_song_to_post_keys[key]['track_name'] + ' by ' + sorted_song_to_post_keys[key]['track_artists'] + ', Listen Here: ' + sorted_song_to_post_keys[key]['track_external_urls']
+        caption_tracks.append(caption_track)
+    img_1 = placid_images[1]
+    img_2 = placid_images[2]
+    img_3 = placid_images[3]
+    img_4 = placid_images[4]
+    template = 'tuebewt1a'
+    placid_create_image = create_image (img_1, img_2, img_3, img_4, template)
+    title = ', '.join(artists)
+    placid_image_url = placid_create_image['image_url']
+    image_urls.insert(0, placid_image_url)
     children = '%2C'.join(creation_ids)
+    caption_track = '\n'.join(caption_track)
     caption = generateSocialMediaPost(title)
     caption = caption + generateHastags(caption)
-    caption = caption + "\n\nhttps://wwww.workoutranger.com" + "\nRanger Radio: https://open.spotify.com/playlist/5YAAetoRA0Z2ty3OkGspxM" 
+    caption = caption +  "\n\n" + caption_track + "\n\nhttps://wwww.workoutranger.com" + "\nRanger Radio: https://open.spotify.com/playlist/5YAAetoRA0Z2ty3OkGspxM" 
     encoded_args = urlencode({'caption' : caption, 'media_type' : 'CAROUSEL', 'access_token' : instagram_access_token})
     encoded_args = 'children=' + children + '&' + encoded_args 
     url = facebook_api + instagram_business_account_id + '/media?' + encoded_args
@@ -221,26 +243,6 @@ def main():
         items['track_images'] = track_images
         items['track_popularity'] = track_popularity
         songs_to_post[track_popularity] = items
-    sorted_songs_to_post = OrderedDict(sorted(songs_to_post.items(), reverse=True))
-    sorted_song_to_post_keys = sorted_songs_to_post.keys()
-    photos = {}
-    artists = []
-    image_urls = []
-    count = 0
-    for key in sorted_song_to_post_keys:
-        count = count + 1
-        photos[count] = sorted_songs_to_post[key]['track_images']
-        artists.append(sorted_song_to_post_keys[key]['track_artists'])
-        image_urls.append(sorted_song_to_post_keys[key]['track_images'])
-    img_1 = photos[1]
-    img_2 = photos[2]
-    img_3 = photos[3]
-    img_4 = photos[4]
-    template = 'tuebewt1a'
-    placid_create_image = create_image (img_1, img_2, img_3, img_4, template)
-    title = ', '.join(artist)
-    placid_image_url = placid_create_image['image_url']
-    image_urls.insert(0, placid_image_url)
     text_secret_data = get_secret("workout_ranger_instagram")
     facebook_page_id = text_secret_data['page_id']
     instagram_access_token = text_secret_data['access_token']
@@ -250,7 +252,7 @@ def main():
     for image_url in image_urls:
         creation_id = instagram_media_container(facebook_api, instagram_business_account_id, instagram_access_token, image_url)
         creation_ids.append(creation_id)
-    instagram_carousel_container_id = instagram_carousel_container(creation_ids, facebook_api, instagram_business_account_id, instagram_access_token, title)
+    instagram_carousel_container_id = instagram_carousel_container(creation_ids, facebook_api, instagram_business_account_id, instagram_access_token, songs_to_post)
     instagram_media_id = instagram_media_publish(facebook_api, instagram_business_account_id, instagram_carousel_container_id, instagram_access_token)
     return instagram_media_id
     
